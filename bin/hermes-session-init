@@ -1,0 +1,122 @@
+#!/bin/bash
+# hermes-session-init — bootstrap a fresh Claude Code session with the
+# conventions required for recursive/emergent work.
+#
+# Subcommands:
+#   --check                verify prerequisites; print one-line OK or fail.
+#   --print                print the CLAUDE-fragment to stdout.
+#   --inject <project>     append fragment to <project>/CLAUDE.md (idempotent).
+#   --uninject <project>   remove fragment (or restore from latest backup).
+#   --help                 print usage.
+
+set -euo pipefail
+
+_self_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Fragment lookup order: env override -> repo-local (../CLAUDE-fragment.md) -> handbook source-of-record.
+if [[ -n "${HERMES_SESSION_INIT_FRAGMENT:-}" ]]; then
+    FRAGMENT="$HERMES_SESSION_INIT_FRAGMENT"
+elif [[ -f "$_self_dir/../CLAUDE-fragment.md" ]]; then
+    FRAGMENT="$_self_dir/../CLAUDE-fragment.md"
+else
+    FRAGMENT="$HOME/Documents/projects/hermes-handbook/session-init/CLAUDE-fragment.md"
+fi
+HANDBOOK="$HOME/Documents/projects/hermes-handbook"
+MEMDIR="$HOME/.claude/projects/-Users-rbr-lpci/memory"
+GROUND="$HOME/bin/hermes-ground"
+RUBRIC="$HOME/bin/hermes-rubric-blinded"
+BEGIN_MARK='<!-- session-init: BEGIN -->'
+END_MARK='<!-- session-init: END -->'
+
+usage() {
+    sed -n '2,/^$/p' "$0" | sed 's/^# *//; s/^#$//'
+}
+
+cmd_check() {
+    local fail=""
+    [[ -x "$GROUND" ]] || fail="$fail hermes-ground(missing-or-not-exec)"
+    [[ -f "$RUBRIC" ]] || fail="$fail hermes-rubric-blinded(missing)"
+    [[ -d "$HANDBOOK" ]] || fail="$fail handbook(missing)"
+    [[ -f "$FRAGMENT" ]] || fail="$fail CLAUDE-fragment.md(missing)"
+    for f in feedback_grounding_when_emergent.md \
+             feedback_calibrate_analysis_before_ship.md \
+             feedback_rubric_blind_passthrough_default.md \
+             feedback_no_noun_phrase_before_file.md; do
+        [[ -f "$MEMDIR/$f" ]] || fail="$fail memory/$f(missing)"
+    done
+    if [[ -n "$fail" ]]; then
+        echo "FAIL:$fail" >&2
+        exit 1
+    fi
+    echo "OK: prereqs present (hermes-ground, hermes-rubric-blinded, 4 memory files, handbook)"
+}
+
+cmd_print() {
+    [[ -f "$FRAGMENT" ]] || { echo "fragment not found: $FRAGMENT" >&2; exit 1; }
+    cat "$FRAGMENT"
+}
+
+cmd_inject() {
+    local proj="${1:-}"
+    [[ -n "$proj" ]] || { echo "usage: hermes-session-init --inject <project-dir>" >&2; exit 2; }
+    [[ -d "$proj" ]] || { echo "not a directory: $proj" >&2; exit 2; }
+    [[ -f "$FRAGMENT" ]] || { echo "fragment not found: $FRAGMENT" >&2; exit 1; }
+    local target="$proj/CLAUDE.md"
+    if [[ -f "$target" ]] && grep -qF "$BEGIN_MARK" "$target"; then
+        echo "already injected (marker present): $target"
+        exit 0
+    fi
+    if [[ -f "$target" ]]; then
+        local ts; ts=$(date +%Y%m%d-%H%M%S)
+        cp "$target" "$target.bak.$ts"
+        printf '\n' >> "$target"
+        cat "$FRAGMENT" >> "$target"
+        echo "injected: $target (backup: $target.bak.$ts)"
+    else
+        cat "$FRAGMENT" > "$target"
+        echo "created: $target"
+    fi
+}
+
+cmd_uninject() {
+    local proj="${1:-}"
+    [[ -n "$proj" ]] || { echo "usage: hermes-session-init --uninject <project-dir>" >&2; exit 2; }
+    [[ -d "$proj" ]] || { echo "not a directory: $proj" >&2; exit 2; }
+    local target="$proj/CLAUDE.md"
+    if [[ -f "$target" ]] && grep -qF "$BEGIN_MARK" "$target"; then
+        local tmp; tmp=$(mktemp)
+        awk -v b="$BEGIN_MARK" -v e="$END_MARK" '
+            index($0,b){skip=1; next}
+            skip && index($0,e){skip=0; next}
+            !skip{print}
+        ' "$target" > "$tmp"
+        # trim trailing blank lines from the cut
+        awk 'BEGIN{RS=""}{print}' "$tmp" > "$target" 2>/dev/null || mv "$tmp" "$target"
+        rm -f "$tmp"
+        echo "uninjected (marker removed): $target"
+        exit 0
+    fi
+    # fall back to latest backup
+    local latest
+    latest=$(ls -1t "$proj"/CLAUDE.md.bak.* 2>/dev/null | head -1 || true)
+    if [[ -n "$latest" ]]; then
+        cp "$latest" "$target"
+        echo "restored from backup: $latest -> $target"
+        exit 0
+    fi
+    echo "no marker and no backup found in $proj" >&2
+    exit 1
+}
+
+main() {
+    [[ $# -gt 0 ]] || { usage; exit 2; }
+    case "$1" in
+        --check) shift; cmd_check "$@" ;;
+        --print) shift; cmd_print "$@" ;;
+        --inject) shift; cmd_inject "$@" ;;
+        --uninject) shift; cmd_uninject "$@" ;;
+        --help|-h) usage ;;
+        *) echo "unknown arg: $1" >&2; usage; exit 2 ;;
+    esac
+}
+
+main "$@"

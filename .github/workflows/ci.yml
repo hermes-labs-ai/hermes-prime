@@ -1,0 +1,44 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+
+    env:
+      # CI doesn't have hermes-ground / hermes-rubric-blinded / handbook installed.
+      # The test script handles --check failure gracefully (it skips the check assertion
+      # if prereqs are missing, but still runs the print/inject/uninject assertions).
+      HERMES_SESSION_INIT_FRAGMENT: ${{ github.workspace }}/CLAUDE-fragment.md
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show bash version
+        run: bash --version
+
+      - name: Install shellcheck
+        run: |
+          if [[ "$RUNNER_OS" == "Linux" ]]; then
+            sudo apt-get update && sudo apt-get install -y shellcheck
+          else
+            brew install shellcheck
+          fi
+
+      - name: Lint bash binary
+        run: shellcheck bin/hermes-session-init test-bootstrap.sh evals/preliminary-bootstrap-eval.sh
+
+      - name: Run mechanism tests (9 assertions)
+        run: bash test-bootstrap.sh
+
+      - name: Run idempotency + roundtrip evals (E2 + E3, no claude-cli needed)
+        run: bash evals/preliminary-bootstrap-eval.sh --skip-e1
