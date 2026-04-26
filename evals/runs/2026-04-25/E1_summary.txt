@@ -1,0 +1,9 @@
+E1 convention-recall summary — 2026-04-25
+n_questions = 3
+control_passes = 0
+treatment_passes = 3
+control_rate = 0.00
+treatment_rate = 1.00
+lift = +1.00
+per_question_control = N N N
+per_question_treatment = Y Y Y

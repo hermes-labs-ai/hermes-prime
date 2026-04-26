@@ -1,0 +1,1 @@
+No noun-phrase label until a file exists at a path — names create the illusion of completion, so describe the artifact ("a CLAUDE.md fragment listing the call conditions") rather than coining a label ("an X Bundle") before it exists.

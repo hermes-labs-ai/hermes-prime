@@ -1,0 +1,1 @@
+Run `~/bin/hermes-ground <briefing.md> --out /tmp/verdict.md` to get a fresh-context GROUNDED/DRIFTING/RE-PLAN verdict.

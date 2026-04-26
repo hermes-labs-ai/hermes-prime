@@ -1,0 +1,1 @@
+Run `/verify` to check the Hermes Seal of the working directory and externally ground the session's trust state.

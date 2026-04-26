@@ -1,0 +1,1 @@
+Every shippable artifact should pass through a BLINDed rubric review before ship.

@@ -1,0 +1,1 @@
+Every shippable artifact should be reviewed end-to-end against its actual runtime behavior — code read for correctness, then exercised through the real flow (browser/API/data) to verify the golden path and edge cases — not just trusted because types check or tests pass.

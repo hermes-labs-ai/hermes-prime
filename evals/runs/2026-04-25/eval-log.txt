@@ -1,0 +1,51 @@
+hermes-prime preliminary eval — 2026-04-25
+repo: /Users/rbr_lpci/Documents/projects/hermes-prime
+bin:  /Users/rbr_lpci/Documents/projects/hermes-prime/bin/hermes-session-init
+===
+
+[CALIBRATION] dry-testing score_response on 9 synthetic cases
+[CALIBRATION] pass=9 fail=0 (target: 9/0)
+[CALIBRATION] OK — scoring function categorizes correctly.
+
+=== E1 — convention-recall test (with vs without bootstrap) ===
+E1 control_dir   = /var/folders/rl/4wlw8qps1mbck2hmdcfx0dx80000gn/T/hp-e1-ctrl-XXXX.YWDUiMuQJK (no CLAUDE.md)
+E1 treatment_dir = /var/folders/rl/4wlw8qps1mbck2hmdcfx0dx80000gn/T/hp-e1-trt-XXXX.0jrElmS3iy (CLAUDE.md present, marker injected)
+
+  --- Q-ground ---
+  Q: What tool would I run to externally ground a drifting session? Reply in one sentence.
+  CONTROL  (N): Run `/verify` to check the Hermes Seal of the working directory and externally ground the session's trust state.
+  TREATMENT (Y): Run `~/bin/hermes-ground <briefing.md> --out /tmp/verdict.md` to get a fresh-context GROUNDED/DRIFTING/RE-PLAN verdict.
+
+  --- Q-noun-phrase ---
+  Q: What is the rule about coining names for new concepts mid-session? Reply in one sentence.
+  CONTROL  (N): I don't have a memory or instruction on file about coining names for new concepts mid-session.
+  TREATMENT (Y): No noun-phrase label until a file exists at a path — names create the illusion of completion, so describe the artifact ("a CLAUDE.md fragment listing the call conditions") rather
+
+  --- Q-rubric ---
+  Q: How should every shippable artifact be reviewed before ship? Reply in one sentence.
+  CONTROL  (N): Every shippable artifact should be reviewed end-to-end against its actual runtime behavior — code read for correctness, then exercised through the real flow (browser/API/data) to
+  TREATMENT (Y): Every shippable artifact should pass through a BLINDed rubric review before ship.
+
+  E1 SUMMARY:
+    control  recall: 0/3 = 0.00
+    treatment recall: 3/3 = 1.00
+    lift           : +1.00
+  E1: data captured. Honest reporting: lift=+1.00 (positive, zero, or negative all reported).
+
+=== E2 — idempotency stress (5 rapid re-injections) ===
+  size after 1 inject:     2479 bytes
+  size after 5 injects:     2479 bytes
+  |delta|: 0 (target: ≤ 2)
+  E2: PASS
+
+=== E3 — uninject roundtrip integrity ===
+  pre-inject  sha256 (raw):  07c809c9862661855572af8144f287b4f3f3b90546540eefbe2e130d19348ce1
+  post-uninject sha256 (raw): d51fe6791ab5e37e2c86455f82198d0487c6ad29d099beeca67050d252b47c01
+  whitespace-tolerant pre:   d51fe6791ab5e37e2c86455f82198d0487c6ad29d099beeca67050d252b47c01
+  whitespace-tolerant post:  d51fe6791ab5e37e2c86455f82198d0487c6ad29d099beeca67050d252b47c01
+  E3: PASS (roundtrip integrity preserved)
+
+===
+MECHANISM EVALS (E2, E3): pass=2 fail=0
+E1 (empirical): see /Users/rbr_lpci/Documents/projects/hermes-prime/evals/runs/2026-04-25/E1_summary.txt for actual recall numbers.
+Run log: /Users/rbr_lpci/Documents/projects/hermes-prime/evals/runs/2026-04-25/eval-log.txt
