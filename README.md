@@ -1,21 +1,21 @@
 # hermes-prime
 
-**Pump-prime a fresh Claude Code session with the conventions you keep forgetting at minute 30.**
+**Stop your fresh Claude Code session from drifting in its first 30 minutes.** Inject a self-contained convention card so the next session — yours, or a fresh `claude --print` subagent — opens with the four discipline rules (grounding, calibration, BLINDed rubric pass-through, no-naming-before-implementation) already in scope. The fragment is the entire artifact; it does not require any other Hermes Labs tool to be installed.
 
 [![CI](https://github.com/hermes-labs-ai/hermes-prime/actions/workflows/ci.yml/badge.svg)](https://github.com/hermes-labs-ai/hermes-prime/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Hermes Seal](https://img.shields.io/badge/Hermes%20Seal-signed-blue.svg)](https://github.com/hermes-labs-ai/hermes-seal)
 [![Status: alpha](https://img.shields.io/badge/status-alpha-orange.svg)](#status)
 
-A small bash bootstrap that injects a versioned `CLAUDE.md` fragment into a project so the next session — yours, or a fresh `claude --print` subagent — opens with the conventions already loaded: when to call external grounding, where the audit-stack tools live, and the standing rules (calibrate-before-ship, rubric pass-through, no-noun-phrase-before-file).
+This is a **stabilizer**, not an accelerator. It does not make the session faster — it keeps the session honest. We (Hermes Labs) ship the convention card we use ourselves; fork to taste, or replace the fragment file with your own via `HERMES_SESSION_INIT_FRAGMENT=/path/to/custom.md`.
 
-It is a markdown fragment plus a 4-subcommand bash installer. No model. No network. No global config. ~120 LOC.
+Two surfaces, one shared fragment: a 4-subcommand bash installer (works in any agent) and a Claude-Code-native MCP server (no `CLAUDE.md` mutation). No model. No network. No global config. ~120 LOC of bash + ~180 LOC of stdlib Python.
 
 ## Pain
 
 Long sessions drift. Conventions you committed to in session N evaporate by minute 30 of session N+1 — the orchestrator silently re-derives "should I ground?" instead of just looking at a card it already owns. The cost compounds: 3 commits without ship, a noun-phrase label coined for an empty path, a fix-on-fix without enumerating alternatives. By the time you notice, you are out of context budget to undo it.
 
-The conventions live in your handbook and in feedback memory files. The orchestrator never sees them in a fresh session.
+The discipline rules normally live in scattered handbook docs, feedback files, or session-end retros — places a fresh session never reads. `hermes-prime` packages them as a single self-contained card the orchestrator opens with.
 
 ## How it's different
 

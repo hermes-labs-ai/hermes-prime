@@ -32,22 +32,22 @@ usage() {
 }
 
 cmd_check() {
+    # v0.2 — the fragment is self-contained, so --check only verifies that
+    # the bootstrap itself and the fragment file are present. Optional
+    # Hermes-Labs companion tools (hermes-ground, hermes-rubric-blinded,
+    # handbook) are reported as informational, never as failures.
     local fail=""
-    [[ -x "$GROUND" ]] || fail="$fail hermes-ground(missing-or-not-exec)"
-    [[ -f "$RUBRIC" ]] || fail="$fail hermes-rubric-blinded(missing)"
-    [[ -d "$HANDBOOK" ]] || fail="$fail handbook(missing)"
-    [[ -f "$FRAGMENT" ]] || fail="$fail CLAUDE-fragment.md(missing)"
-    for f in feedback_grounding_when_emergent.md \
-             feedback_calibrate_analysis_before_ship.md \
-             feedback_rubric_blind_passthrough_default.md \
-             feedback_no_noun_phrase_before_file.md; do
-        [[ -f "$MEMDIR/$f" ]] || fail="$fail memory/$f(missing)"
-    done
+    [[ -f "$FRAGMENT" ]] || fail="$fail CLAUDE-fragment.md(missing-at:$FRAGMENT)"
     if [[ -n "$fail" ]]; then
         echo "FAIL:$fail" >&2
         exit 1
     fi
-    echo "OK: prereqs present (hermes-ground, hermes-rubric-blinded, 4 memory files, handbook)"
+    local note=""
+    [[ -x "$GROUND" ]] && note="$note hermes-ground:found" || note="$note hermes-ground:absent"
+    [[ -f "$RUBRIC" ]] && note="$note hermes-rubric-blinded:found" || note="$note hermes-rubric-blinded:absent"
+    [[ -d "$HANDBOOK" ]] && note="$note handbook:found" || note="$note handbook:absent"
+    echo "OK: fragment present at $FRAGMENT"
+    echo "INFO (companion tools, not required):$note"
 }
 
 cmd_print() {

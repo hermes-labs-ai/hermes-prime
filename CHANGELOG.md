@@ -2,6 +2,28 @@
 
 All notable changes to `hermes-prime` will be documented in this file. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows [SemVer](https://semver.org/).
 
+## [0.2.0] — 2026-04-26
+
+Reframed v0.2 — same mechanism, updated framing and self-contained fragment.
+
+### Changed
+
+- **Verb correction.** Reframed README from "pump-prime / accelerator" to **stabilizer** — the tool keeps a fresh session honest, it does not make it faster. Honest framing makes the empirical claims (E1 convention-recall) defensible.
+- **Self-contained fragment.** `CLAUDE-fragment.md` rewritten so each of the four conventions (grounding, calibration, BLINDed rubric pass-through, no-noun-phrase) is fully inlined: rule, when-to-apply, what-it-prevents, mechanical form, and origin story. No more pointers to user-missing memory files (`feedback_*.md`). The fragment is now the entire artifact; non-Roli users do not need any other Hermes-Labs file installed for the rules to apply.
+- **`--check` no longer demands Hermes-Labs companion tools.** Now verifies only that the bootstrap and fragment file exist; reports companion-tool presence as informational. Lets the bash binary `--check` succeed on a fresh machine with no `~/bin/hermes-*` binaries.
+- **Tool map describes function-classes, not paths.** The fragment names what each function does (fresh-context grounding agent, synthetic-truth calibration, debiased rubric pass) and lists Hermes Labs tools as *one* fulfillment. Manual fallbacks are listed alongside.
+- **README opener** explicitly frames as "the convention stack we use ourselves; adapt or replace" and points at the `HERMES_SESSION_INIT_FRAGMENT` env override.
+
+### Verified
+
+- Bash test suite: 9/9 PASS unchanged.
+- MCP server tests: 10/10 PASS unchanged.
+- Bash `--check` exits 0 on a clean repo with only the fragment file present (the v0.2 contract).
+
+### Why
+
+v0.1 implicitly assumed a Roli-installed environment. The v0.2 framing makes the free-OSS surface honest: anyone can install this bash tool on a fresh machine and `--check` will pass. The custom-conventions story (extracting a user's own conventions from session history) becomes the future paid-tier wedge — same binary, different fragment file via the env override that already exists.
+
 ## [0.1.0] — 2026-04-25
 
 Initial public release. Promoted from internal handbook scaffolding to its own repo after the bootstrap proved out across multiple sessions.
