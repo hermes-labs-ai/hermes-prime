@@ -23,7 +23,24 @@ Most "set up the agent" tools either (a) ship a giant prompt file you copy-paste
 
 The fragment is a snapshot, not a live reference. Re-inject to refresh. The marker (`<!-- session-init: BEGIN/END -->`) means uninject is byte-clean.
 
-## Install
+## Two surfaces
+
+| Surface | Audience | Mechanism |
+|---|---|---|
+| **MCP server** (recommended for Claude Code) | Claude Code users | Native MCP tools — `get_conventions` / `list_scopes`. No `CLAUDE.md` mutation, no snapshot. See [`mcp-server/`](mcp-server/). |
+| **Bash binary** (universal fallback) | Cursor, Aider, raw scripts, CI, non-Claude-Code agents | Inject the fragment into a project's `CLAUDE.md` between markers. Snapshot semantics — re-inject to refresh. |
+
+Both share the same `CLAUDE-fragment.md`. They are independent surfaces; pick whichever fits your agent.
+
+## MCP server (Claude Code native)
+
+```bash
+claude mcp add hermes-prime -- python3 "$PWD/mcp-server/hermes_prime_mcp.py"
+```
+
+Then call `get_conventions` from any Claude Code session. Pure stdlib, no third-party deps. Full registration + uninstall instructions in [`mcp-server/README.md`](mcp-server/README.md).
+
+## Install (bash binary)
 
 ```bash
 git clone https://github.com/hermes-labs-ai/hermes-prime.git
