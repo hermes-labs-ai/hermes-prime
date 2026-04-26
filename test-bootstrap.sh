@@ -10,6 +10,7 @@ PASS=0
 FAIL=0
 FAILED_LINES=()
 
+# shellcheck disable=SC2317,SC2329  # invoked indirectly via trap
 cleanup() { rm -rf "$TMP"; }
 trap cleanup EXIT
 
@@ -25,7 +26,12 @@ assert() {
     fi
 }
 
-"$BIN" --check >/dev/null 2>&1 && assert "check exits 0" true || { echo "SKIP-context: --check failed:"; "$BIN" --check || true; }
+if "$BIN" --check >/dev/null 2>&1; then
+    assert "check exits 0" true
+else
+    echo "SKIP-context: --check failed:"
+    "$BIN" --check || true
+fi
 
 PRINT_OUT=$("$BIN" --print 2>/dev/null || true)
 assert "print non-empty" test -n "$PRINT_OUT"
@@ -45,7 +51,7 @@ assert "idempotent (size delta <=1)" test "$DIFF" -le 1
 PROJ2="$TMP/proj2"; mkdir -p "$PROJ2"
 echo "# pre-existing" > "$PROJ2/CLAUDE.md"
 "$BIN" --inject "$PROJ2" >/dev/null 2>&1
-BACKUPS=$(ls -1 "$PROJ2"/CLAUDE.md.bak.* 2>/dev/null | wc -l | tr -d ' ')
+BACKUPS=$(find "$PROJ2" -maxdepth 1 -name 'CLAUDE.md.bak.*' 2>/dev/null | wc -l | tr -d ' ')
 assert "backup created on existing CLAUDE.md" test "$BACKUPS" -ge 1
 assert "pre-existing content preserved" grep -qF 'pre-existing' "$PROJ2/CLAUDE.md"
 

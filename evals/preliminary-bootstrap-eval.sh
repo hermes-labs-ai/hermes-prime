@@ -175,9 +175,10 @@ run_e1() {
     for s in "${results_ctrl[@]}"; do [[ "$s" == "Y" ]] && ctrl_y=$((ctrl_y+1)); done
     for s in "${results_trt[@]}"; do [[ "$s" == "Y" ]] && trt_y=$((trt_y+1)); done
     local n=${#qids[@]}
-    local ctrl_rate=$(awk -v y="$ctrl_y" -v n="$n" 'BEGIN{printf "%.2f", y/n}')
-    local trt_rate=$(awk -v y="$trt_y" -v n="$n" 'BEGIN{printf "%.2f", y/n}')
-    local lift=$(awk -v t="$trt_rate" -v c="$ctrl_rate" 'BEGIN{printf "%+.2f", t-c}')
+    local ctrl_rate trt_rate lift
+    ctrl_rate=$(awk -v y="$ctrl_y" -v n="$n" 'BEGIN{printf "%.2f", y/n}')
+    trt_rate=$(awk -v y="$trt_y" -v n="$n" 'BEGIN{printf "%.2f", y/n}')
+    lift=$(awk -v t="$trt_rate" -v c="$ctrl_rate" 'BEGIN{printf "%+.2f", t-c}')
 
     log ""
     log "  E1 SUMMARY:"

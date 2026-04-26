@@ -112,6 +112,16 @@ Run them: `bash evals/preliminary-bootstrap-eval.sh`. Protocol in [`evals/EVAL-P
 
 If E1 returns a null result on a larger sweep, that gets published, not papered over. Same standing convention as the rest of the audit stack.
 
+## Local CI mirror
+
+Before pushing, run the local mirror of the GitHub Actions workflow:
+
+```bash
+./scripts/local-ci.sh
+```
+
+It runs `shellcheck`, the bash test suite, the MCP server pytest suite, and the fragment-size + marker assertions. Exits non-zero on any check CI would also fail on. Install `shellcheck` (`brew install shellcheck`) for the linting check; the rest is stdlib + Python.
+
 ## License
 
 MIT. See [LICENSE](LICENSE).

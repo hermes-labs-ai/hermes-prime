@@ -21,7 +21,6 @@ else
     FRAGMENT="$HOME/Documents/projects/hermes-handbook/session-init/CLAUDE-fragment.md"
 fi
 HANDBOOK="$HOME/Documents/projects/hermes-handbook"
-MEMDIR="$HOME/.claude/projects/-Users-rbr-lpci/memory"
 GROUND="$HOME/bin/hermes-ground"
 RUBRIC="$HOME/bin/hermes-rubric-blinded"
 BEGIN_MARK='<!-- session-init: BEGIN -->'
@@ -97,6 +96,7 @@ cmd_uninject() {
     fi
     # fall back to latest backup
     local latest
+    # shellcheck disable=SC2012  # ls -t for mtime sort is fine here; backup names are timestamped + safe
     latest=$(ls -1t "$proj"/CLAUDE.md.bak.* 2>/dev/null | head -1 || true)
     if [[ -n "$latest" ]]; then
         cp "$latest" "$target"
