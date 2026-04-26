@@ -1,0 +1,55 @@
+# hermes-prime
+
+> A bash bootstrap that injects a versioned CLAUDE.md fragment into a project so a fresh Claude Code session opens with grounding triggers, convention pointers, and tool-map already in scope. Per-project, marker-anchored, idempotent, fully reversible.
+
+## What it does
+
+Four subcommands on a single bash binary:
+
+- `--check`: verify prereqs (hermes-ground, hermes-rubric-blinded, handbook, 4 feedback memory files).
+- `--print`: print the CLAUDE-fragment to stdout.
+- `--inject <project>`: append the fragment to `<project>/CLAUDE.md` between markers; backs up any existing CLAUDE.md.
+- `--uninject <project>`: remove the marked block, or restore from latest backup.
+
+Idempotent. Re-running `--inject` is a no-op (size delta ≤ 1 char).
+
+## Install
+
+    git clone https://github.com/hermes-labs-ai/hermes-prime.git
+    ln -s "$PWD/hermes-prime/bin/hermes-session-init" /usr/local/bin/hermes-session-init
+
+## What gets injected
+
+A markdown block containing:
+- 7 grounding-trigger conditions (when to call hermes-ground)
+- Pointers to 4 standing-feedback memory files (calibrate-before-ship, rubric pass-through, grounding-on-emergence, no-noun-phrase-before-file)
+- Tool map (hermes-ground, hermes-rubric-blinded, handbook, this bootstrap)
+- The rule most often forgotten mid-session: no noun-phrase label until a file exists at a path.
+
+See `CLAUDE-fragment.md` for the full text.
+
+## When to use
+
+- Starting recursive/emergent work (taxonomy design, rubric construction, structure-discovery debugging).
+- Onboarding a fresh `claude --print` subagent that needs the parent session's conventions.
+- Restarting a long session in a new context.
+
+## When not to use
+
+- Short single-task sessions where the conventions add noise without payoff.
+- Generation-task-only sessions with no grounding or rubric loop.
+
+## Status
+
+v0.1.0 — alpha. Mechanism fully tested (9/9 unit assertions green). Empirical convention-recall claim in `evals/`.
+
+## Related
+
+- hermes-ground — fresh-context grounding agent (the tool the fragment teaches the orchestrator to invoke).
+- hermes-rubric — evidence-first scoring; rubric pass-through pattern.
+- hermes-blind — multi-turn drift correction; runs *after* drift accumulates. hermes-prime runs *before*.
+- hermes-seal — cryptographic attestation; this repo ships a sealed manifest.
+
+## Repo
+
+https://github.com/hermes-labs-ai/hermes-prime

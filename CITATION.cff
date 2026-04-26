@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use hermes-prime in research or production tooling, please cite it."
+title: "hermes-prime: a session-priming bootstrap for Claude Code"
+abstract: "A bash bootstrap that injects a versioned CLAUDE.md fragment into a project so a fresh Claude Code session opens with grounding triggers, convention pointers, and tool-map already in scope. Per-project, marker-anchored, idempotent, fully reversible."
+authors:
+  - family-names: "Bosch"
+    given-names: "Rolando"
+    affiliation: "Hermes Labs"
+    email: "rbosch@lpci.ai"
+version: "0.1.0"
+date-released: "2026-04-25"
+license: MIT
+repository-code: "https://github.com/hermes-labs-ai/hermes-prime"
+url: "https://hermes-labs.ai"
+keywords:
+  - llm
+  - claude-code
+  - agent-conventions
+  - session-bootstrap
+  - audit-stack
