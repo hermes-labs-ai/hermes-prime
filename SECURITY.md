@@ -6,7 +6,7 @@
 
 ## Reporting a Vulnerability
 
-Email: **rbosch@lpci.ai** with subject line `[security] hermes-prime`.
+Email: **roli@hermes-labs.ai** with subject line `[security] hermes-prime`.
 
 Do not open public GitHub issues for security reports.
 
