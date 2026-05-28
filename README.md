@@ -156,7 +156,7 @@ zenodo.org and the Hermes Labs paper line. The OSS surface is the
 proof; the commercial work is enterprise deployments.
 
 For enterprise deployments and AI-reliability engagements: 
-roli@hermes-labs.ai · lpci.ai
+roli@hermes-labs.ai · hermes-labs.ai
 
 On naming. Hermes Labs is named for Hermes, the Greek messenger god — 
 patron of communication and interpretation, the herald who carries 
