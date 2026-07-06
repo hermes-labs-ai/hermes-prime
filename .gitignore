@@ -5,3 +5,6 @@
 .venv/
 __pycache__/
 *.pyc
+README.md.bak-*
+evals/e1-3way/raw-data.jsonl
+evals/e1-3way/runner.log
