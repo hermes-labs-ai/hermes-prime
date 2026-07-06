@@ -67,7 +67,8 @@ def main():
     with open(RAW) as f:
         for line in f:
             line = line.strip()
-            if not line: continue
+            if not line:
+                continue
             try:
                 d = json.loads(line)
             except Exception:
@@ -101,7 +102,8 @@ def main():
     arm_rate = {}
     for a in arms:
         scores = by_arm[a]
-        n = len(scores); k = sum(scores)
+        n = len(scores)
+        k = sum(scores)
         rate = k/n if n else 0
         lo, hi = wilson_ci(k, n)
         arm_rate[a] = rate
@@ -121,13 +123,15 @@ def main():
     lines.append("\n## Direct vs indirect breakdown\n")
     lines.append("| arm | direct rate | indirect rate |")
     lines.append("|---|---|---|")
-    direct_rate = {}; indirect_rate = {}
+    direct_rate = {}
+    indirect_rate = {}
     for a in arms:
         d = by_arm_kind[(a, "direct")]
         i = by_arm_kind[(a, "indirect")]
         dr = sum(d)/len(d) if d else 0
         ir = sum(i)/len(i) if i else 0
-        direct_rate[a] = dr; indirect_rate[a] = ir
+        direct_rate[a] = dr
+        indirect_rate[a] = ir
         lines.append(f"| {a} | {dr:.3f} ({sum(d)}/{len(d)}) | {ir:.3f} ({sum(i)}/{len(i)}) |")
 
     # Verdict

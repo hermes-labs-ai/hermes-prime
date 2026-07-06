@@ -4,7 +4,6 @@ import json
 import os
 import shutil
 import subprocess
-import sys
 import tempfile
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -31,9 +30,12 @@ QUESTIONS = {
 
 def setup_dirs():
     base = Path(tempfile.mkdtemp(prefix="e1-"))
-    control = base / "control"; control.mkdir()
-    v01 = base / "v01"; v01.mkdir()
-    v02 = base / "v02"; v02.mkdir()
+    control = base / "control"
+    control.mkdir()
+    v01 = base / "v01"
+    v01.mkdir()
+    v02 = base / "v02"
+    v02.mkdir()
     shutil.copy(V01_FRAGMENT, v01 / "CLAUDE.md")
     shutil.copy(V02_FRAGMENT, v02 / "CLAUDE.md")
     return {"control": control, "v01": v01, "v02": v02}
