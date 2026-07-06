@@ -108,7 +108,7 @@ Run them: `bash evals/preliminary-bootstrap-eval.sh`. Protocol in [`evals/EVAL-P
 
 ## Status
 
-**v0.1.0 - alpha.** The mechanism (inject/uninject/idempotency) is fully tested (9/9 unit assertions green). The empirical claim - that injecting the fragment measurably improves convention-recall in a fresh session - is the subject of the E1 eval, run on real `claude --print` and committed unredacted. See [`evals/runs/2026-04-25/`](evals/runs/2026-04-25/) for the actual numbers.
+**v0.2.0 - alpha.** The mechanism (inject/uninject/idempotency) is fully tested (9/9 unit assertions green). The empirical claim - that injecting the fragment measurably improves convention-recall in a fresh session - is the subject of the E1 eval, run on real `claude --print` and committed unredacted. See [`evals/runs/2026-04-25/`](evals/runs/2026-04-25/) for the actual numbers.
 
 If E1 returns a null result on a larger sweep, that gets published, not papered over. Same standing convention as the rest of the audit stack.
 
