@@ -4,7 +4,6 @@
 
 [![CI](https://github.com/hermes-labs-ai/hermes-prime/actions/workflows/ci.yml/badge.svg)](https://github.com/hermes-labs-ai/hermes-prime/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Hermes Seal](https://img.shields.io/badge/Hermes%20Seal-signed-blue.svg)](https://github.com/hermes-labs-ai/hermes-seal)
 [![Status: alpha](https://img.shields.io/badge/status-alpha-orange.svg)](#status)
 
 This is a **stabilizer**, not an accelerator. It does not make the session faster - it keeps the session honest. We (Hermes Labs) ship the convention card we use ourselves; fork to taste, or replace the fragment file with your own via `HERMES_SESSION_INIT_FRAGMENT=/path/to/custom.md`.
@@ -104,7 +103,7 @@ Run them: `bash evals/preliminary-bootstrap-eval.sh`. Protocol in [`evals/EVAL-P
 - [`hermes-ground`](https://github.com/hermes-labs-ai/hermes-ground) - the fresh-context grounding agent the fragment teaches the orchestrator to invoke. *(companion tool, not in this repo)*
 - [`hermes-rubric`](https://github.com/hermes-labs-ai/hermes-rubric) - evidence-first scoring; the convention "every shippable artifact passes through a BLINDed rubric" points here.
 - [`hermes-blind`](https://github.com/hermes-labs-ai/hermes-blind) - multi-turn drift correction scaffold; runs *after* drift accumulates. `hermes-prime` runs *before* drift starts.
-- [`hermes-seal`](https://github.com/hermes-labs-ai/hermes-seal) - cryptographic attestation. This repo ships a sealed `.hermes-seal.yaml` manifest.
+- [`hermes-seal`](https://github.com/hermes-labs-ai/hermes-seal) - cryptographic attestation (program currently dormant). This repo ships an unsigned `.hermes-seal.yaml` placeholder manifest, not a granted seal.
 
 ## Status
 
