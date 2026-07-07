@@ -142,9 +142,9 @@ model is the ceiling, not the source. Reliability is a question of
 linguistic infrastructure, not model tuning. Live evidence: a recall A/B 
 test shows language-scaffold state lifts session-continuity recall from 
 0.00 to 0.83 (n=74 sessions), with 2.5x context compression. The 
-engineering follow-on: when language is the substrate, the engineering 
-is interpretive - recovering meaning across the boundaries between 
-model and user, session and session, training and runtime.
+engineering follow-on: when language is the operations layer, the 
+engineering is interpretive - recovering meaning across the boundaries 
+between model and user, session and session, training and runtime.
 
 Public technical receipts. The flagship open-source release is fidelis 
 - zero-LLM agent memory with integer-pointer fidelity. 73.0% end-to-end 
@@ -178,3 +178,7 @@ Quantitative sources for claims above:
   repo, recall A/B experiment records
 - 24-failure taxonomy: hermes-rubric/calibration/failure-mode-taxonomy.md
 
+
+## About Hermes Labs
+
+Hermes Labs is building the reliability stack for the agent era — Epistemic Engineering: applied epistemology and hermeneutics for AI systems. The technical thesis: the model is the substrate, language is the operations layer; reliability is a question of linguistic infrastructure, not model tuning. hermes-prime is the drift-prevention session-init card in that stack. Founded by Rolando (Roli) Bosch.
