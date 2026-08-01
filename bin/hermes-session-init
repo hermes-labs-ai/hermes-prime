@@ -111,7 +111,12 @@ cmd_uninject() {
                         else
                             : > "$exact_tmp"
                         fi
-                        mv "$exact_tmp" "$target"
+                        if ! cat "$exact_tmp" > "$target"; then
+                            rm -f "$exact_tmp"
+                            echo "failed to restore original target bytes: $target" >&2
+                            exit 1
+                        fi
+                        rm "$exact_tmp"
                         echo "uninjected (exact injected suffix removed): $target"
                         exit 0
                     fi
@@ -127,7 +132,12 @@ cmd_uninject() {
             skip && index($0,e){skip=0; next}
             !skip{print}
         ' "$target" > "$tmp"
-        mv "$tmp" "$target"
+        if ! cat "$tmp" > "$target"; then
+            rm -f "$tmp"
+            echo "failed to remove marker block: $target" >&2
+            exit 1
+        fi
+        rm "$tmp"
         echo "uninjected (marker removed): $target"
         exit 0
     fi

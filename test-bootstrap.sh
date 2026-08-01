@@ -34,8 +34,10 @@ else
 fi
 
 PRINT_OUT=$("$BIN" --print 2>/dev/null || true)
-assert "print non-empty" test -n "$PRINT_OUT"
-case "$PRINT_OUT" in *hermes-ground*) assert "print contains hermes-ground" true ;; *) assert "print contains hermes-ground" false ;; esac
+case "$PRINT_OUT" in
+    *hermes-ground*) assert "print non-empty and contains hermes-ground" test -n "$PRINT_OUT" ;;
+    *) assert "print non-empty and contains hermes-ground" false ;;
+esac
 
 PROJ="$TMP/proj1"; mkdir -p "$PROJ"
 "$BIN" --inject "$PROJ" >/dev/null 2>&1
@@ -63,10 +65,17 @@ assert "uninject restores absent CLAUDE.md" test ! -e "$PROJ/CLAUDE.md"
 
 PROJ3="$TMP/proj3"; mkdir -p "$PROJ3"
 printf '# Existing\n\nFirst paragraph.\n\nSecond paragraph.\n' > "$PROJ3/CLAUDE.md"
+chmod 640 "$PROJ3/CLAUDE.md"
+MODE3=$(stat -f '%Lp' "$PROJ3/CLAUDE.md" 2>/dev/null || stat -c '%a' "$PROJ3/CLAUDE.md")
 cp "$PROJ3/CLAUDE.md" "$PROJ3/original"
 "$BIN" --inject "$PROJ3" >/dev/null 2>&1
 "$BIN" --uninject "$PROJ3" >/dev/null 2>&1
-assert "uninject byte-restores multi-paragraph file" cmp -s "$PROJ3/original" "$PROJ3/CLAUDE.md"
+MODE3_AFTER=$(stat -f '%Lp' "$PROJ3/CLAUDE.md" 2>/dev/null || stat -c '%a' "$PROJ3/CLAUDE.md")
+if cmp -s "$PROJ3/original" "$PROJ3/CLAUDE.md" && [[ "$MODE3_AFTER" == "$MODE3" ]]; then
+    assert "uninject byte-restores multi-paragraph file and mode" true
+else
+    assert "uninject byte-restores multi-paragraph file and mode" false
+fi
 
 PROJ4="$TMP/proj4"; mkdir -p "$PROJ4"
 printf '# Existing without final newline' > "$PROJ4/CLAUDE.md"
@@ -74,6 +83,18 @@ cp "$PROJ4/CLAUDE.md" "$PROJ4/original"
 "$BIN" --inject "$PROJ4" >/dev/null 2>&1
 "$BIN" --uninject "$PROJ4" >/dev/null 2>&1
 assert "uninject byte-restores no-final-newline file" cmp -s "$PROJ4/original" "$PROJ4/CLAUDE.md"
+
+PROJ5="$TMP/proj5"; mkdir -p "$PROJ5"
+printf '# Symlink target\n\nOriginal bytes.\n' > "$PROJ5/backing.md"
+cp "$PROJ5/backing.md" "$PROJ5/original"
+ln -s backing.md "$PROJ5/CLAUDE.md"
+"$BIN" --inject "$PROJ5" >/dev/null 2>&1
+"$BIN" --uninject "$PROJ5" >/dev/null 2>&1
+if [[ -L "$PROJ5/CLAUDE.md" ]] && cmp -s "$PROJ5/original" "$PROJ5/backing.md"; then
+    assert "uninject preserves symlink and referent bytes" true
+else
+    assert "uninject preserves symlink and referent bytes" false
+fi
 
 echo "---"
 echo "PASS: $PASS  FAIL: $FAIL"
