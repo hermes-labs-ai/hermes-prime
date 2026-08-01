@@ -1,6 +1,6 @@
 #!/bin/bash
-# hermes-session-init — bootstrap a fresh Claude Code session with the
-# conventions required for recursive/emergent work.
+# hermes-session-init 0.2.1a1 (unreleased source candidate) — deliver a
+# versioned convention card to a fresh Claude Code session.
 #
 # Subcommands:
 #   --check                verify prerequisites; print one-line OK or fail.
@@ -82,15 +82,50 @@ cmd_uninject() {
     [[ -d "$proj" ]] || { echo "not a directory: $proj" >&2; exit 2; }
     local target="$proj/CLAUDE.md"
     if [[ -f "$target" ]] && grep -qF "$BEGIN_MARK" "$target"; then
+        # Fast path for blocks appended by cmd_inject: remove the exact byte
+        # suffix instead of reparsing the file. This preserves all preceding
+        # bytes, including paragraph spacing and a missing final newline.
+        local fragment_size target_size
+        fragment_size=$(wc -c < "$FRAGMENT" | tr -d ' ')
+        target_size=$(wc -c < "$target" | tr -d ' ')
+
+        if [[ "$target_size" -eq "$fragment_size" ]] \
+            && cmp -s "$target" "$FRAGMENT"; then
+            rm "$target"
+            echo "uninjected (removed CLAUDE.md created by injection): $target"
+            exit 0
+        fi
+
+        if [[ "$target_size" -gt "$fragment_size" ]] \
+            && tail -c "$fragment_size" "$target" | cmp -s - "$FRAGMENT"; then
+            local prefix_size separator
+            prefix_size=$((target_size - fragment_size - 1))
+            if [[ "$prefix_size" -ge 0 ]]; then
+                separator=$(dd if="$target" bs=1 skip="$prefix_size" count=1 2>/dev/null \
+                    | od -An -tu1 | tr -d ' ')
+                if [[ "$separator" == "10" ]]; then
+                    local exact_tmp; exact_tmp=$(mktemp)
+                    if [[ "$prefix_size" -gt 0 ]]; then
+                        dd if="$target" of="$exact_tmp" bs=1 count="$prefix_size" 2>/dev/null
+                    else
+                        : > "$exact_tmp"
+                    fi
+                    mv "$exact_tmp" "$target"
+                    echo "uninjected (exact injected suffix removed): $target"
+                    exit 0
+                fi
+            fi
+        fi
+
+        # Fallback for an externally added or edited marker block. Preserve
+        # line structure; do not collapse paragraphs or trim blank lines.
         local tmp; tmp=$(mktemp)
         awk -v b="$BEGIN_MARK" -v e="$END_MARK" '
             index($0,b){skip=1; next}
             skip && index($0,e){skip=0; next}
             !skip{print}
         ' "$target" > "$tmp"
-        # trim trailing blank lines from the cut
-        awk 'BEGIN{RS=""}{print}' "$tmp" > "$target" 2>/dev/null || mv "$tmp" "$target"
-        rm -f "$tmp"
+        mv "$tmp" "$target"
         echo "uninjected (marker removed): $target"
         exit 0
     fi

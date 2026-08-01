@@ -1,6 +1,6 @@
 hermes-prime preliminary eval — 2026-04-25
-repo: /Users/rbr_lpci/Documents/projects/hermes-prime
-bin:  /Users/rbr_lpci/Documents/projects/hermes-prime/bin/hermes-session-init
+repo: [path redacted: local evaluation workspace]
+bin:  [path redacted: local evaluation workspace]
 ===
 
 [CALIBRATION] dry-testing score_response on 9 synthetic cases
@@ -47,5 +47,5 @@ E1 treatment_dir = /var/folders/rl/4wlw8qps1mbck2hmdcfx0dx80000gn/T/hp-e1-trt-XX
 
 ===
 MECHANISM EVALS (E2, E3): pass=2 fail=0
-E1 (empirical): see /Users/rbr_lpci/Documents/projects/hermes-prime/evals/runs/2026-04-25/E1_summary.txt for actual recall numbers.
-Run log: /Users/rbr_lpci/Documents/projects/hermes-prime/evals/runs/2026-04-25/eval-log.txt
+E1 (empirical): see [path redacted: local evaluation workspace] for actual recall numbers.
+Run log: [path redacted: local evaluation workspace]

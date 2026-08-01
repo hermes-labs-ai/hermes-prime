@@ -19,7 +19,7 @@ set -uo pipefail
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 BIN="$REPO_ROOT/bin/hermes-session-init"
 RUN_DATE=$(date +%Y-%m-%d)
-RUN_DIR="$REPO_ROOT/evals/runs/$RUN_DATE"
+RUN_DIR="${HERMES_PRIME_EVAL_RUN_DIR:-$REPO_ROOT/evals/runs/$RUN_DATE}"
 mkdir -p "$RUN_DIR"
 
 SKIP_E1=0
@@ -33,8 +33,8 @@ LOG="$RUN_DIR/eval-log.txt"
 
 log() { echo "$@" | tee -a "$LOG"; }
 log "hermes-prime preliminary eval — $RUN_DATE"
-log "repo: $REPO_ROOT"
-log "bin:  $BIN"
+log "repo: [current checkout]"
+log "bin:  bin/hermes-session-init"
 log "==="
 
 # ---------------------------------------------------------------
@@ -256,20 +256,12 @@ EOF
     "$BIN" --uninject "$d" >/dev/null 2>&1
     local post_hash; post_hash=$(shasum -a 256 "$d/CLAUDE.md" | awk '{print $1}')
 
-    # Whitespace-tolerant comparison: also check after stripping trailing whitespace.
-    local pre_trim post_trim
-    pre_trim=$(awk 'BEGIN{RS=""}{print}' "$d/CLAUDE.md.bak."* 2>/dev/null | head -c 100000 | shasum -a 256 | awk '{print $1}')
-    # Compute post_trim from the current CLAUDE.md (whitespace-collapsed).
-    post_trim=$(awk 'BEGIN{RS=""}{print}' "$d/CLAUDE.md" | shasum -a 256 | awk '{print $1}')
-
     log "  pre-inject  sha256 (raw):  $pre_hash"
     log "  post-uninject sha256 (raw): $post_hash"
-    log "  whitespace-tolerant pre:   $pre_trim"
-    log "  whitespace-tolerant post:  $post_trim"
 
     rm -rf "$d"
-    if [[ "$pre_hash" == "$post_hash" ]] || [[ "$pre_trim" == "$post_trim" ]]; then
-        log "  E3: PASS (roundtrip integrity preserved)"
+    if [[ "$pre_hash" == "$post_hash" ]]; then
+        log "  E3: PASS (raw bytes restored exactly)"
         PASS=$((PASS+1))
         return 0
     else

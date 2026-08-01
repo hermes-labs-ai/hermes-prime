@@ -140,7 +140,7 @@ def main() -> None:
             send_result(request_id, {
                 "protocolVersion": "2024-11-05",
                 "capabilities": {"tools": {}},
-                "serverInfo": {"name": "hermes-prime", "version": "0.2.0"},
+                "serverInfo": {"name": "hermes-prime", "version": "0.2.1a1"},
             })
 
         elif method == "notifications/initialized":

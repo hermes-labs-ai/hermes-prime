@@ -56,11 +56,21 @@ assert "backup created on existing CLAUDE.md" test "$BACKUPS" -ge 1
 assert "pre-existing content preserved" grep -qF 'pre-existing' "$PROJ2/CLAUDE.md"
 
 "$BIN" --uninject "$PROJ" >/dev/null 2>&1
-if [[ -f "$PROJ/CLAUDE.md" ]] && grep -qF '<!-- session-init: BEGIN -->' "$PROJ/CLAUDE.md"; then
-    assert "uninject removed marker" false
-else
-    assert "uninject removed marker" true
-fi
+assert "uninject restores absent CLAUDE.md" test ! -e "$PROJ/CLAUDE.md"
+
+PROJ3="$TMP/proj3"; mkdir -p "$PROJ3"
+printf '# Existing\n\nFirst paragraph.\n\nSecond paragraph.\n' > "$PROJ3/CLAUDE.md"
+cp "$PROJ3/CLAUDE.md" "$PROJ3/original"
+"$BIN" --inject "$PROJ3" >/dev/null 2>&1
+"$BIN" --uninject "$PROJ3" >/dev/null 2>&1
+assert "uninject byte-restores multi-paragraph file" cmp -s "$PROJ3/original" "$PROJ3/CLAUDE.md"
+
+PROJ4="$TMP/proj4"; mkdir -p "$PROJ4"
+printf '# Existing without final newline' > "$PROJ4/CLAUDE.md"
+cp "$PROJ4/CLAUDE.md" "$PROJ4/original"
+"$BIN" --inject "$PROJ4" >/dev/null 2>&1
+"$BIN" --uninject "$PROJ4" >/dev/null 2>&1
+assert "uninject byte-restores no-final-newline file" cmp -s "$PROJ4/original" "$PROJ4/CLAUDE.md"
 
 echo "---"
 echo "PASS: $PASS  FAIL: $FAIL"

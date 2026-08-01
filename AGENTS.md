@@ -4,14 +4,19 @@ Guidance for autonomous agents and LLM tooling that may consume, extend, or be p
 
 ## What this is
 
-A bash bootstrap (`bin/hermes-session-init`) plus a markdown fragment (`CLAUDE-fragment.md`). The bootstrap injects the fragment into a project's `CLAUDE.md` so the next session opens with conventions in scope. Four subcommands: `--check`, `--print`, `--inject`, `--uninject`. ~120 LOC of bash, no Python, no dependencies.
+Two local surfaces share `CLAUDE-fragment.md`: a Bash bootstrap that injects
+the card into a project's `CLAUDE.md`, and a stdlib Python MCP server that
+returns it over stdio. The Bash surface has four subcommands: `--check`,
+`--print`, `--inject`, and `--uninject`; the MCP surface has two read-only
+tools. Source version `0.2.1a1` is an unreleased candidate, not a public release.
 
 ## What this is not
 
 - Not a model, an API, or a judge.
 - Not an automatic grounding caller — the fragment teaches the orchestrator *when* to call `hermes-ground`; it does not call it for you.
 - Not a global config patcher — it never touches `~/CLAUDE.md`. Per-project only.
-- Not a runtime daemon — it runs once per inject; the fragment lives in the project repo from then on.
+- Not a drift-prevention guarantee — delivery is tested; downstream adherence is not.
+- Not a runtime daemon — Bash runs once per inject; MCP is a host-launched stdio process.
 
 ## When to invoke (as an agent)
 
@@ -29,7 +34,7 @@ Skip if:
 ## Minimal invocation
 
 ```bash
-hermes-session-init --check                          # verify prereqs
+hermes-session-init --check                          # require fragment; report optional companions
 hermes-session-init --inject /path/to/project        # idempotent
 # ... do work ...
 hermes-session-init --uninject /path/to/project      # cleanup
@@ -43,11 +48,14 @@ After injection, a session reading the project's `CLAUDE.md` will know:
 2. **Where the audit-stack tools live** — paths for `hermes-ground`, `hermes-rubric-blinded`, the handbook.
 3. **The four standing conventions** — calibrate-before-ship, rubric pass-through, grounding-on-emergence, no-noun-phrase-before-file.
 
-The fragment is a *snapshot* of conventions at injection time. If the underlying memory feedback files change, re-inject to refresh.
+The fragment is a *snapshot* of conventions at injection time. Re-inject to
+refresh after changing the repository fragment.
 
 ## Honest scope
 
-`hermes-prime` does not measure whether the conventions are followed after injection. The companion tool `hermes-ground` does that for grounding. `hermes-rubric` does that for ship-quality. `hermes-prime` only guarantees the conventions are *in scope*.
+`hermes-prime` does not measure whether conventions are followed after
+delivery. It proves only the tested transport behavior: MCP returns a selected
+card, and unedited Bash injection can be reversed to the original bytes.
 
 The empirical claim that injection improves convention-recall in a fresh session is the subject of the E1 eval in `evals/`. Read the eval transcripts in `evals/runs/` for the actual numbers.
 

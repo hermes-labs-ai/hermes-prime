@@ -4,7 +4,7 @@ Native Claude Code surface for `hermes-prime`. Exposes the session-priming
 conventions as MCP tools so a fresh session can call `get_conventions` once
 at the top instead of relying on `CLAUDE.md` injection.
 
-Pure stdlib. No third-party deps. ~150 LOC.
+Pure stdlib. No third-party runtime dependencies.
 
 ## Tools
 
@@ -15,23 +15,22 @@ Pure stdlib. No third-party deps. ~150 LOC.
 
 ## Register in Claude Code
 
-Recommended (CLI):
+Run from the repository root. Local scope loads the command for your sessions
+in the current project:
 
 ```bash
-claude mcp add hermes-prime -- python3 /Users/rbr_lpci/Documents/projects/hermes-prime/mcp-server/hermes_prime_mcp.py
+claude mcp add --scope local hermes-prime -- python3 "$PWD/mcp-server/hermes_prime_mcp.py"
 ```
 
-Manual fallback — add this to `~/.claude.json` under `mcpServers`:
+For a private command available to your sessions across projects, use user
+scope:
 
-```json
-"hermes-prime": {
-  "command": "python3",
-  "args": ["/Users/rbr_lpci/Documents/projects/hermes-prime/mcp-server/hermes_prime_mcp.py"]
-}
+```bash
+claude mcp add --scope user hermes-prime -- python3 "$PWD/mcp-server/hermes_prime_mcp.py"
 ```
 
-Restart Claude Code. The tools appear as `mcp__hermes-prime__get_conventions`
-and `mcp__hermes-prime__list_scopes`.
+Use `claude mcp get hermes-prime` or `claude mcp list` to verify registration.
+The tools appear in sessions covered by the selected scope.
 
 ## Verify it works
 
@@ -39,7 +38,7 @@ and `mcp__hermes-prime__list_scopes`.
 printf '%s\n%s\n' \
   '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}' \
   '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"get_conventions","arguments":{}}}' \
-  | python3 /Users/rbr_lpci/Documents/projects/hermes-prime/mcp-server/hermes_prime_mcp.py
+  | python3 "$PWD/mcp-server/hermes_prime_mcp.py"
 ```
 
 Two JSON-RPC responses; second one contains the fragment markdown.
@@ -50,7 +49,7 @@ Two JSON-RPC responses; second one contains the fragment markdown.
 claude mcp remove hermes-prime
 ```
 
-Or delete the `hermes-prime` entry from `~/.claude.json` `mcpServers`.
+Remove it from the same project/scope in which it was registered.
 
 ## Configuration
 
@@ -61,7 +60,6 @@ Scoped fragments live in `mcp-server/fragments/<scope_class>.md`.
 ## Tests
 
 ```bash
-cd /Users/rbr_lpci/Documents/projects/hermes-prime
 python3 -m pytest mcp-server/test_hermes_prime_mcp.py -v
 ```
 

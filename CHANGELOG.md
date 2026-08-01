@@ -2,6 +2,40 @@
 
 All notable changes to `hermes-prime` will be documented in this file. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows [SemVer](https://semver.org/).
 
+Historical version headings below describe source revisions. They are not
+evidence that a GitHub release object or matching public tag exists.
+
+## [Unreleased — 0.2.1a1 source candidate]
+
+This source state is not a public tag or release. Any push, tag, or release
+requires separate owner authorization and public readback.
+
+### Changed
+
+- `--uninject` now byte-restores an unedited injected suffix, including
+  multi-paragraph and no-final-newline files, and removes a `CLAUDE.md` created
+  solely by injection.
+- Hosted CI now includes the 10-test MCP suite alongside ShellCheck, the
+  11-assertion Bash suite, and E2/E3 mechanism checks.
+- README, Security, Citation, MCP handshake, Bash help, and machine-facing
+  documentation identify source version `0.2.1a1` and its unreleased state.
+- E3 now requires identical raw pre/post hashes instead of accepting a
+  whitespace-normalized match.
+
+### Removed
+
+- Unsupported efficacy and internal-rate claims.
+- Retracted or incorrectly paired research statistics from this repository's
+  current authority surfaces.
+- Workstation path values and a dormant attestation placeholder from the
+  current tree.
+
+### Verified locally
+
+- Bash mechanism suite: 11/11.
+- MCP suite: 10/10.
+- E2/E3: pass with identical E3 raw hashes.
+
 ## [0.2.0] — 2026-04-26
 
 Reframed v0.2 — same mechanism, updated framing and self-contained fragment.
@@ -26,7 +60,7 @@ v0.1 implicitly assumed a Roli-installed environment. The v0.2 framing makes the
 
 ## [0.1.0] — 2026-04-25
 
-Initial public release. Promoted from internal handbook scaffolding to its own repo after the bootstrap proved out across multiple sessions.
+Initial public source publication, promoted from internal handbook scaffolding.
 
 ### Added
 
@@ -39,7 +73,6 @@ Initial public release. Promoted from internal handbook scaffolding to its own r
 - `evals/runs/2026-04-25/` — initial eval run transcripts (unredacted).
 - `INTENT.md` — invariants, accepts/rejects/non-goals.
 - Standard repo polish: README, LICENSE (MIT), CITATION.cff, AGENTS.md, llms.txt, CONTRIBUTING, CODE_OF_CONDUCT, SECURITY, CHANGELOG, .github/workflows/ci.yml, .gitignore.
-- `.hermes-seal.yaml` — sealed manifest (signed at release).
 
 ### Changed
 
@@ -47,4 +80,6 @@ Initial public release. Promoted from internal handbook scaffolding to its own r
 
 ### Notes
 
-- This is alpha. The mechanism is fully tested. The empirical claim — that injection improves convention-recall in a fresh session — is the subject of E1 and is reported unredacted whether positive or null.
+- This was alpha source. The v0.1 Bash suite exercised nine assertions. E1
+  recorded one three-question control/treatment observation and did not
+  establish downstream adherence or drift reduction.

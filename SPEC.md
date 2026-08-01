@@ -27,17 +27,14 @@ noise without payoff.
 
 ## What it injects
 
-1. The grounding-triggers card (summary of `~/bin/hermes-ground-triggers.md`,
-   including the call-conditions verbatim).
-2. Convention pointers — references to the four standing-feedback memory
-   entries (`feedback_grounding_when_emergent.md`,
-   `feedback_calibrate_analysis_before_ship.md`,
-   `feedback_rubric_blind_passthrough_default.md`,
-   `feedback_no_noun_phrase_before_file.md`) with one-line reminders.
-3. A tool map — where `hermes-ground`, `hermes-rubric-blinded`, the handbook,
-   and the trigger card live.
-4. A startup self-check (`hermes-session-init --check`) that verifies the
-   above paths exist and prints a single-line readiness report.
+1. Seven conditions for taking a fresh-context outside view.
+2. Four self-contained conventions: grounding, calibration, evidence-first
+   rubric pass-through, and name discipline.
+3. A tool map that names function classes, optional Hermes Labs
+   implementations, and manual fallbacks.
+4. A startup self-check (`hermes-session-init --check`) that requires the
+   self-contained fragment and reports optional companion-tool presence as
+   informational.
 
 ## What it does NOT do
 
@@ -57,8 +54,8 @@ noise without payoff.
 
 A user knows the bootstrap worked when:
 
-- `hermes-session-init --check` exits 0 and prints
-  `OK: prereqs present (hermes-ground, hermes-rubric-blinded, 4 memory files, handbook)`.
+- `hermes-session-init --check` exits 0 when the fragment is present, prints
+  its resolved path, and reports companion tools as optional information.
 - `hermes-session-init --inject <project-dir>` exits 0 and the project's
   `CLAUDE.md` now contains the marker comment
   `<!-- session-init: BEGIN -->` and the fragment body.
@@ -76,7 +73,11 @@ hermes-session-init --uninject <project-dir>
 ```
 
 Removes the marked block (anchored on `<!-- session-init: BEGIN -->` /
-`<!-- session-init: END -->`). If the marker is absent but a backup
+`<!-- session-init: END -->`). For an exact block appended by `--inject`, it
+removes the injected byte suffix and restores all pre-existing bytes exactly;
+if injection created `CLAUDE.md`, uninject removes that file. An edited or
+externally supplied marker block uses line-preserving marker removal. If the
+marker is absent but a backup
 `CLAUDE.md.bak.<timestamp>` exists, restores from the most recent backup. If
 neither marker nor backup is present, exits non-zero with a clear message —
 no destructive guessing.

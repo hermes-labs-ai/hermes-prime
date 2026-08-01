@@ -4,10 +4,11 @@
 
 ## Session conventions — Hermes Labs stack (adapt or replace)
 
-This is the convention stack Hermes Labs uses to keep recursive/emergent
-work from drifting in its first 30 minutes. Opinionated. Replace this file
-and re-inject if you have your own conventions (see README). **Self-contained** —
-no other Hermes Labs tool required for the rules to apply.
+This is the convention stack Hermes Labs uses for recursive or emergent work.
+It makes four operating rules available to a session; it does not guarantee
+that a model will follow them. Opinionated. Replace this file and re-inject if
+you have your own conventions (see README). **Self-contained** — no other
+Hermes Labs tool is required to read or apply the rules.
 
 ---
 
@@ -25,7 +26,7 @@ fresh-context outside view *before* committing to the next move.
 - The user signals cognitive-bandwidth overflow ("I'm lost", "where are we", "are we drifting").
 - Rubric-on-rubric depth ≥ 2.
 
-**What it prevents.** Compounding drift inside the running session's context
+**Risk addressed.** Compounding drift inside the running session's context
 window — the failure mode where the orchestrator silently re-justifies its
 last move instead of asking whether the move was right.
 
@@ -36,8 +37,8 @@ trying to do, what we just did, what we're about to do" and ask one of:
 `hermes-ground` tool — it is *one* fulfillment of this rule, not the only
 one. A 60-second manual conversation with a colleague counts.
 
-**Why we follow it.** ~70% of our session-end retros trace to a missed
-grounding moment that would have saved 3+ commits.
+**Why we follow it.** A fresh outside view is a low-cost way to challenge a
+locally coherent plan. No drift-reduction rate is established here.
 
 ---
 
@@ -54,7 +55,7 @@ verify it returns the known-correct output.
 - Before claiming "the data shows X" — generate synthetic data where X is
   known to be true and verify the script reports X.
 
-**What it prevents.** Shipping a sign-flipped, off-by-one, or column-swapped
+**Risk addressed.** Shipping a sign-flipped, off-by-one, or column-swapped
 analysis as a confident result. The 2026-04-25 incident that motivated this
 rule involved a pipeline that read column headers in the wrong order; the
 output looked plausible and almost shipped.
@@ -85,7 +86,7 @@ not just rating "did the author do what they set out to do" but also
 - Before posting publicly anything that names a Hermes Labs tool.
 - After any "we should ship this" moment in a session.
 
-**What it prevents.** Goal-substitution drift — the failure mode where the
+**Risk addressed.** Goal-substitution drift — the failure mode where the
 session ships a polished version of the *wrong* thing because the framing
 was loaded ("is this ready?", "is this sound?") and the rubric never got a
 chance to disagree.
@@ -98,9 +99,9 @@ Hermes Labs implementation is `hermes-rubric` with `--scope-class gate-plan
 --intent-debias --batch`. A manual structured score with the same two
 disciplines counts.
 
-**Why we follow it.** Most of our publish-readiness misses came from the
-framing layer, not the substance layer. Substance was usually fine; the
-artifact described itself as something it wasn't.
+**Why we follow it.** Framing can load a review toward the author's desired
+answer. Intent-debias and evidence-first scoring make that influence visible;
+no miss-rate estimate is asserted here.
 
 ---
 
@@ -116,7 +117,7 @@ artifact until a file containing it exists at a real path on disk.
 - README sections that describe a feature that does not yet exist.
 - Slide decks, papers, or pitches that name something pre-implementation.
 
-**What it prevents.** The illusion-of-completion failure mode. A name makes
+**Risk addressed.** The illusion-of-completion failure mode. A name makes
 the team (and the orchestrator) act as if the thing exists. Estimates anchor
 on the name. New work gets layered on top of the name. By the time someone
 opens the path, two days of downstream work depend on a thing that was never
