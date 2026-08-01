@@ -53,7 +53,10 @@ echo "# pre-existing" > "$PROJ2/CLAUDE.md"
 "$BIN" --inject "$PROJ2" >/dev/null 2>&1
 BACKUPS=$(find "$PROJ2" -maxdepth 1 -name 'CLAUDE.md.bak.*' 2>/dev/null | wc -l | tr -d ' ')
 assert "backup created on existing CLAUDE.md" test "$BACKUPS" -ge 1
-assert "pre-existing content preserved" grep -qF 'pre-existing' "$PROJ2/CLAUDE.md"
+HERMES_SESSION_INIT_FRAGMENT="$TMP/missing-fragment" \
+    "$BIN" --uninject "$PROJ2" >/dev/null 2>&1
+assert "fallback uninject works without fragment" bash -c \
+    "grep -qF 'pre-existing' '$PROJ2/CLAUDE.md' && ! grep -qF '<!-- session-init: BEGIN -->' '$PROJ2/CLAUDE.md'"
 
 "$BIN" --uninject "$PROJ" >/dev/null 2>&1
 assert "uninject restores absent CLAUDE.md" test ! -e "$PROJ/CLAUDE.md"

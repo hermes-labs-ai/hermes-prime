@@ -8,8 +8,8 @@ bin:  [path redacted: local evaluation workspace]
 [CALIBRATION] OK — scoring function categorizes correctly.
 
 === E1 — convention-recall test (with vs without bootstrap) ===
-E1 control_dir   = /var/folders/rl/4wlw8qps1mbck2hmdcfx0dx80000gn/T/hp-e1-ctrl-XXXX.YWDUiMuQJK (no CLAUDE.md)
-E1 treatment_dir = /var/folders/rl/4wlw8qps1mbck2hmdcfx0dx80000gn/T/hp-e1-trt-XXXX.0jrElmS3iy (CLAUDE.md present, marker injected)
+E1 control_dir   = [path redacted: local evaluation workspace] (no CLAUDE.md)
+E1 treatment_dir = [path redacted: local evaluation workspace] (CLAUDE.md present, marker injected)
 
   --- Q-ground ---
   Q: What tool would I run to externally ground a drifting session? Reply in one sentence.

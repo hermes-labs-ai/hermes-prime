@@ -85,34 +85,36 @@ cmd_uninject() {
         # Fast path for blocks appended by cmd_inject: remove the exact byte
         # suffix instead of reparsing the file. This preserves all preceding
         # bytes, including paragraph spacing and a missing final newline.
-        local fragment_size target_size
-        fragment_size=$(wc -c < "$FRAGMENT" | tr -d ' ')
-        target_size=$(wc -c < "$target" | tr -d ' ')
+        if [[ -r "$FRAGMENT" ]]; then
+            local fragment_size target_size
+            fragment_size=$(wc -c < "$FRAGMENT" | tr -d ' ')
+            target_size=$(wc -c < "$target" | tr -d ' ')
 
-        if [[ "$target_size" -eq "$fragment_size" ]] \
-            && cmp -s "$target" "$FRAGMENT"; then
-            rm "$target"
-            echo "uninjected (removed CLAUDE.md created by injection): $target"
-            exit 0
-        fi
+            if [[ "$target_size" -eq "$fragment_size" ]] \
+                && cmp -s "$target" "$FRAGMENT"; then
+                rm "$target"
+                echo "uninjected (removed CLAUDE.md created by injection): $target"
+                exit 0
+            fi
 
-        if [[ "$target_size" -gt "$fragment_size" ]] \
-            && tail -c "$fragment_size" "$target" | cmp -s - "$FRAGMENT"; then
-            local prefix_size separator
-            prefix_size=$((target_size - fragment_size - 1))
-            if [[ "$prefix_size" -ge 0 ]]; then
-                separator=$(dd if="$target" bs=1 skip="$prefix_size" count=1 2>/dev/null \
-                    | od -An -tu1 | tr -d ' ')
-                if [[ "$separator" == "10" ]]; then
-                    local exact_tmp; exact_tmp=$(mktemp)
-                    if [[ "$prefix_size" -gt 0 ]]; then
-                        dd if="$target" of="$exact_tmp" bs=1 count="$prefix_size" 2>/dev/null
-                    else
-                        : > "$exact_tmp"
+            if [[ "$target_size" -gt "$fragment_size" ]] \
+                && tail -c "$fragment_size" "$target" | cmp -s - "$FRAGMENT"; then
+                local prefix_size separator
+                prefix_size=$((target_size - fragment_size - 1))
+                if [[ "$prefix_size" -ge 0 ]]; then
+                    separator=$(dd if="$target" bs=1 skip="$prefix_size" count=1 2>/dev/null \
+                        | od -An -tu1 | tr -d ' ')
+                    if [[ "$separator" == "10" ]]; then
+                        local exact_tmp; exact_tmp=$(mktemp)
+                        if [[ "$prefix_size" -gt 0 ]]; then
+                            dd if="$target" of="$exact_tmp" bs=1 count="$prefix_size" 2>/dev/null
+                        else
+                            : > "$exact_tmp"
+                        fi
+                        mv "$exact_tmp" "$target"
+                        echo "uninjected (exact injected suffix removed): $target"
+                        exit 0
                     fi
-                    mv "$exact_tmp" "$target"
-                    echo "uninjected (exact injected suffix removed): $target"
-                    exit 0
                 fi
             fi
         fi

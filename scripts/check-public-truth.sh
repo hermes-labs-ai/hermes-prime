@@ -27,7 +27,7 @@ if grep -Eiq \
     fail=1
 fi
 
-if git grep -qE '(/Users/|/home/)' -- . ':!scripts/check-public-truth.sh'; then
+if git grep -qE '(/Users/|/home/|/var/folders/)' -- . ':!scripts/check-public-truth.sh'; then
     echo "FAIL: tracked current tree contains a private absolute-path pattern" >&2
     fail=1
 fi

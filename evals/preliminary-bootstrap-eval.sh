@@ -129,8 +129,8 @@ run_e1() {
         rm -rf "$control_dir" "$treatment_dir"
         return 2
     }
-    log "E1 control_dir   = $control_dir (no CLAUDE.md)"
-    log "E1 treatment_dir = $treatment_dir (CLAUDE.md present, marker injected)"
+    log "E1 control workspace: temporary directory (no CLAUDE.md)"
+    log "E1 treatment workspace: temporary directory (CLAUDE.md present, marker injected)"
 
     # Question set
     local -a qids=(Q-ground Q-noun-phrase Q-rubric)
@@ -290,8 +290,8 @@ run_e3
 log ""
 log "==="
 log "MECHANISM EVALS (E2, E3): pass=$PASS fail=$FAIL"
-log "E1 (empirical): see $RUN_DIR/E1_summary.txt for actual recall numbers."
-log "Run log: $LOG"
+log "E1 (empirical): see E1_summary.txt in the selected run directory for actual recall numbers."
+log "Run log: eval-log.txt in the selected run directory."
 
 if [[ $FAIL -gt 0 ]]; then
     exit 1
