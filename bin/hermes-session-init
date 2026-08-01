@@ -80,15 +80,48 @@ cmd_uninject() {
     local proj="${1:-}"
     [[ -n "$proj" ]] || { echo "usage: hermes-session-init --uninject <project-dir>" >&2; exit 2; }
     [[ -d "$proj" ]] || { echo "not a directory: $proj" >&2; exit 2; }
-    local target="$proj/CLAUDE.md"
+    local target="$proj/CLAUDE.md" latest
+    # shellcheck disable=SC2012  # ls -t for mtime sort is fine here; backup names are timestamped + safe
+    latest=$(ls -1t "$proj"/CLAUDE.md.bak.* 2>/dev/null | head -1 || true)
     if [[ -f "$target" ]] && grep -qF "$BEGIN_MARK" "$target"; then
+        local target_size
+        target_size=$(wc -c < "$target" | tr -d ' ')
+
+        # Fragment-independent exact path for an unchanged injection into a
+        # pre-existing file. Restore only when the target is provably the
+        # latest backup bytes, one injected newline, and a marker-delimited
+        # suffix. If the prefix changed after injection, retain those edits by
+        # falling through to marker removal instead of restoring the backup.
+        if [[ -n "$latest" ]]; then
+            local backup_size separator block_first block_last
+            backup_size=$(wc -c < "$latest" | tr -d ' ')
+            if [[ "$target_size" -gt "$backup_size" ]] \
+                && head -c "$backup_size" "$target" | cmp -s - "$latest"; then
+                separator=$(dd if="$target" bs=1 skip="$backup_size" count=1 2>/dev/null \
+                    | od -An -tu1 | tr -d ' ')
+                block_first=$(dd if="$target" bs=1 skip=$((backup_size + 1)) 2>/dev/null \
+                    | sed -n '1p')
+                block_last=$(dd if="$target" bs=1 skip=$((backup_size + 1)) 2>/dev/null \
+                    | tail -n 1)
+                if [[ "$separator" == "10" \
+                    && "$block_first" == "$BEGIN_MARK" \
+                    && "$block_last" == "$END_MARK" ]]; then
+                    if ! cat "$latest" > "$target"; then
+                        echo "failed to restore original target bytes: $target" >&2
+                        exit 1
+                    fi
+                    echo "uninjected (exact backup bytes restored): $target"
+                    exit 0
+                fi
+            fi
+        fi
+
         # Fast path for blocks appended by cmd_inject: remove the exact byte
         # suffix instead of reparsing the file. This preserves all preceding
-        # bytes, including paragraph spacing and a missing final newline.
+        # bytes when the currently resolved fragment matches the injected one.
         if [[ -r "$FRAGMENT" ]]; then
-            local fragment_size target_size
+            local fragment_size
             fragment_size=$(wc -c < "$FRAGMENT" | tr -d ' ')
-            target_size=$(wc -c < "$target" | tr -d ' ')
 
             if [[ "$target_size" -eq "$fragment_size" ]] \
                 && cmp -s "$target" "$FRAGMENT"; then
@@ -124,6 +157,20 @@ cmd_uninject() {
             fi
         fi
 
+        # A marker-delimited file with no backup is structurally equivalent to
+        # a CLAUDE.md created solely by injection, even if the current fragment
+        # changed. Do not apply this rule when a backup exists.
+        if [[ -z "$latest" ]]; then
+            local file_first file_last
+            file_first=$(sed -n '1p' "$target")
+            file_last=$(tail -n 1 "$target")
+            if [[ "$file_first" == "$BEGIN_MARK" && "$file_last" == "$END_MARK" ]]; then
+                rm "$target"
+                echo "uninjected (removed marker-only CLAUDE.md): $target"
+                exit 0
+            fi
+        fi
+
         # Fallback for an externally added or edited marker block. Preserve
         # line structure; do not collapse paragraphs or trim blank lines.
         local tmp; tmp=$(mktemp)
@@ -142,11 +189,11 @@ cmd_uninject() {
         exit 0
     fi
     # fall back to latest backup
-    local latest
-    # shellcheck disable=SC2012  # ls -t for mtime sort is fine here; backup names are timestamped + safe
-    latest=$(ls -1t "$proj"/CLAUDE.md.bak.* 2>/dev/null | head -1 || true)
     if [[ -n "$latest" ]]; then
-        cp "$latest" "$target"
+        if ! cat "$latest" > "$target"; then
+            echo "failed to restore backup: $target" >&2
+            exit 1
+        fi
         echo "restored from backup: $latest -> $target"
         exit 0
     fi

@@ -52,13 +52,29 @@ assert "idempotent (size delta <=1)" test "$DIFF" -le 1
 
 PROJ2="$TMP/proj2"; mkdir -p "$PROJ2"
 echo "# pre-existing" > "$PROJ2/CLAUDE.md"
+cp "$PROJ2/CLAUDE.md" "$PROJ2/original"
 "$BIN" --inject "$PROJ2" >/dev/null 2>&1
 BACKUPS=$(find "$PROJ2" -maxdepth 1 -name 'CLAUDE.md.bak.*' 2>/dev/null | wc -l | tr -d ' ')
 assert "backup created on existing CLAUDE.md" test "$BACKUPS" -ge 1
-HERMES_SESSION_INIT_FRAGMENT="$TMP/missing-fragment" \
+printf '%s\n%s\n%s\n' '<!-- session-init: BEGIN -->' 'different fragment' '<!-- session-init: END -->' \
+    > "$TMP/different-fragment"
+HERMES_SESSION_INIT_FRAGMENT="$TMP/different-fragment" \
     "$BIN" --uninject "$PROJ2" >/dev/null 2>&1
-assert "fallback uninject works without fragment" bash -c \
-    "grep -qF 'pre-existing' '$PROJ2/CLAUDE.md' && ! grep -qF '<!-- session-init: BEGIN -->' '$PROJ2/CLAUDE.md'"
+
+PROJ6="$TMP/proj6"; mkdir -p "$PROJ6"
+printf '# original prefix\n' > "$PROJ6/CLAUDE.md"
+"$BIN" --inject "$PROJ6" >/dev/null 2>&1
+sed 's/original prefix/edited prefix/' "$PROJ6/CLAUDE.md" > "$PROJ6/edited"
+mv "$PROJ6/edited" "$PROJ6/CLAUDE.md"
+HERMES_SESSION_INIT_FRAGMENT="$TMP/missing-fragment" \
+    "$BIN" --uninject "$PROJ6" >/dev/null 2>&1
+if cmp -s "$PROJ2/original" "$PROJ2/CLAUDE.md" \
+    && grep -qF 'edited prefix' "$PROJ6/CLAUDE.md" \
+    && ! grep -qF '<!-- session-init: BEGIN -->' "$PROJ6/CLAUDE.md"; then
+    assert "stale-fragment exact restore preserves later prefix edits" true
+else
+    assert "stale-fragment exact restore preserves later prefix edits" false
+fi
 
 "$BIN" --uninject "$PROJ" >/dev/null 2>&1
 assert "uninject restores absent CLAUDE.md" test ! -e "$PROJ/CLAUDE.md"
