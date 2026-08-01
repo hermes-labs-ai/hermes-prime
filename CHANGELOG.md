@@ -5,7 +5,7 @@ All notable changes to `hermes-prime` will be documented in this file. Format fo
 Historical version headings below describe source revisions. They are not
 evidence that a GitHub release object or matching public tag exists.
 
-## [Unreleased — 0.2.1a1 source candidate]
+## [Unreleased — 0.2.1-alpha.1 source candidate]
 
 This source state is not a public tag or release. Any push, tag, or release
 requires separate owner authorization and public readback.
@@ -18,7 +18,7 @@ requires separate owner authorization and public readback.
 - Hosted CI now includes the 10-test MCP suite alongside ShellCheck, the
   11-assertion Bash suite, and E2/E3 mechanism checks.
 - README, Security, Citation, MCP handshake, Bash help, and machine-facing
-  documentation identify source version `0.2.1a1` and its unreleased state.
+  documentation identify source version `0.2.1-alpha.1` and its unreleased state.
 - E3 now requires identical raw pre/post hashes instead of accepting a
   whitespace-normalized match.
 

@@ -1,4 +1,4 @@
-# Eval Protocol — hermes-prime 0.2.1a1 source candidate
+# Eval Protocol — hermes-prime 0.2.1-alpha.1 source candidate
 
 Three preliminary evals. E1 is an exploratory convention-recall observation;
 E2 and E3 are mechanism tests that do not require `claude-cli`. The committed

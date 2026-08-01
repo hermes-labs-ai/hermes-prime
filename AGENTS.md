@@ -8,7 +8,7 @@ Two local surfaces share `CLAUDE-fragment.md`: a Bash bootstrap that injects
 the card into a project's `CLAUDE.md`, and a stdlib Python MCP server that
 returns it over stdio. The Bash surface has four subcommands: `--check`,
 `--print`, `--inject`, and `--uninject`; the MCP surface has two read-only
-tools. Source version `0.2.1a1` is an unreleased candidate, not a public release.
+tools. Source version `0.2.1-alpha.1` is an unreleased candidate, not a public release.
 
 ## What this is not
 

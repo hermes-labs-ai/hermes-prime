@@ -43,8 +43,8 @@ See `CLAUDE-fragment.md` for the full text.
 
 ## Status
 
-Source version `0.2.1a1` is an unreleased alpha candidate. There is no public
-0.2.1a1 tag or GitHub release, and this source state authorizes neither. The
+Source version `0.2.1-alpha.1` is an unreleased alpha candidate. There is no public
+0.2.1-alpha.1 tag or GitHub release, and this source state authorizes neither. The
 local acceptance contract is ShellCheck, 11 Bash assertions, 10 MCP tests, and
 E2/E3 with byte-identical E3 hashes.
 

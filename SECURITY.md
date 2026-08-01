@@ -2,13 +2,13 @@
 
 ## Supported Version Scope
 
-This policy describes the unreleased `0.2.1a1` source candidate and its two
+This policy describes the unreleased `0.2.1-alpha.1` source candidate and its two
 local runtime surfaces. Publication is a separate owner-controlled action; a
 source version or local branch is not evidence that a GitHub release exists.
 
 | Version | Support status | Covered surfaces |
 |---|---|---|
-| `0.2.1a1` | Current unreleased source candidate | Bash bootstrap and stdio MCP server |
+| `0.2.1-alpha.1` | Current unreleased source candidate | Bash bootstrap and stdio MCP server |
 | `0.2.0` and earlier | No security-fix commitment | Historical Bash/MCP behavior |
 
 Support means security reports will be evaluated. It is not a security audit,

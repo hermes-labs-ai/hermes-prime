@@ -128,8 +128,8 @@ called.
 
 ## Status
 
-**Source version 0.2.1a1 — unreleased alpha candidate.** There is no public
-0.2.1a1 tag or GitHub release, and this branch does not authorize one. The
+**Source version 0.2.1-alpha.1 — unreleased alpha candidate.** There is no public
+0.2.1-alpha.1 tag or GitHub release, and this branch does not authorize one. The
 mechanism suite contains 11 Bash assertions plus 10 MCP tests. E1 is one
 author-run three-question control/treatment observation; it is preliminary
 convention-recall evidence, not evidence that the tool prevents drift or

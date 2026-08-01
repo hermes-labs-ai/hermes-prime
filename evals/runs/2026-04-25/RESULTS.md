@@ -43,7 +43,7 @@ Post-uninject sha256 (raw): `d51fe6791ab5e37e2c86455f82198d0487c6ad29d099beeca67
 Whitespace-tolerant comparison (paragraph-collapsed): both hash to `d51fe6791ab5e37e2c86455f82198d0487c6ad29d099beeca67050d252b47c01`. This was recorded as **PASS under the historical v0.1 criterion only**.
 
 **Current-contract verdict: FAIL.** The raw hashes differ. The result is kept
-unchanged as historical evidence; source candidate `0.2.1a1` requires raw-hash
+unchanged as historical evidence; source candidate `0.2.1-alpha.1` requires raw-hash
 equality and must be verified by a fresh run of the current script.
 
 ## Verdict

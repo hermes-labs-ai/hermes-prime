@@ -1,5 +1,5 @@
 #!/bin/bash
-# hermes-session-init 0.2.1a1 (unreleased source candidate) — deliver a
+# hermes-session-init 0.2.1-alpha.1 (unreleased source candidate) — deliver a
 # versioned convention card to a fresh Claude Code session.
 #
 # Subcommands:

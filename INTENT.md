@@ -4,7 +4,7 @@ One-page invariants doc, in the Hermes Labs convention. Read before changing sco
 
 ## What hermes-prime is
 
-An unreleased `0.2.1a1` source candidate with two local convention-delivery
+An unreleased `0.2.1-alpha.1` source candidate with two local convention-delivery
 surfaces: a marker-anchored Bash injector and a read-only stdio MCP server.
 
 ## Accepts
@@ -47,7 +47,7 @@ surfaces: a marker-anchored Bash injector and a read-only stdio MCP server.
 7. **Source-of-record stays in the handbook.** The repo-local fragment is a copy for portability; the handbook copy is the source-of-record (separate, private, internal).
 8. **Public effects stay separate.** A local version or green check does not authorize a tag, release, or push.
 
-## What "done" means for the 0.2.1a1 source candidate
+## What "done" means for the 0.2.1-alpha.1 source candidate
 
 - 11/11 Bash assertions and 10/10 MCP tests pass locally; hosted coverage remains unevaluated until a public run exists.
 - E1 produces actual recall numbers (positive, partial, or null) with raw transcripts committed.
