@@ -1,6 +1,7 @@
-# Eval run — 2026-04-25
+# Historical eval run — 2026-04-25
 
-First public eval pass for `hermes-prime` v0.1.0.
+Preserved v0.1.0 source observation. Its E3 criterion predates the current
+raw-byte contract and must not be treated as current acceptance evidence.
 
 ## Setup
 
@@ -16,7 +17,7 @@ Scoring function dry-tested on 9 synthetic responses (3 questions × 3 synthetic
 
 | Question | Control | Treatment | Notes |
 |---|:-:|:-:|---|
-| Q-ground (which tool to externally ground?) | N | Y | Control named `/verify` (Hermes Seal); treatment named `~/bin/hermes-ground` correctly. |
+| Q-ground (which tool to externally ground?) | N | Y | Control named `/verify` for a retired attestation tool; treatment named `~/bin/hermes-ground` correctly. |
 | Q-noun-phrase (rule about coining names mid-session?) | N | Y | Control: "I don't have a memory or instruction on file about coining names…". Treatment quoted the rule almost verbatim. |
 | Q-rubric (how to review shippable artifact?) | N | Y | Control gave generic "review against runtime behavior" answer. Treatment named "BLINDed rubric". |
 
@@ -35,16 +36,21 @@ Raw transcripts: `E1_Q-ground_control.txt`, `E1_Q-ground_treatment.txt`, etc. in
 
 5 rapid re-injections. CLAUDE.md size after run 1 = 2479 bytes. Size after run 5 = 2479 bytes. |delta| = 0. Target ≤ 2. **PASS.**
 
-## E3 — Uninject roundtrip
+## E3 — Uninject roundtrip (historical criterion)
 
 Pre-inject sha256 (raw): `07c809c9862661855572af8144f287b4f3f3b90546540eefbe2e130d19348ce1`.
 Post-uninject sha256 (raw): `d51fe6791ab5e37e2c86455f82198d0487c6ad29d099beeca67050d252b47c01`.
-Whitespace-tolerant comparison (paragraph-collapsed): both hash to `d51fe6791ab5e37e2c86455f82198d0487c6ad29d099beeca67050d252b47c01`. **PASS** under documented whitespace-tolerance (the awk-based marker removal can normalize trailing whitespace; the protocol is explicit about this).
+Whitespace-tolerant comparison (paragraph-collapsed): both hash to `d51fe6791ab5e37e2c86455f82198d0487c6ad29d099beeca67050d252b47c01`. This was recorded as **PASS under the historical v0.1 criterion only**.
 
-The raw-sha mismatch with whitespace-tolerant match is the expected behavior for the awk-collapse uninject path. If a future version requires byte-identical roundtrip, that's a known v0.2 task.
+**Current-contract verdict: FAIL.** The raw hashes differ. The result is kept
+unchanged as historical evidence; source candidate `0.2.1a1` requires raw-hash
+equality and must be verified by a fresh run of the current script.
 
 ## Verdict
 
-Mechanism evals (E2, E3) pass cleanly. Empirical E1 returns lift = +1.00 at n=1, which is a strong directional signal but not a stable rate. The package ships at v0.1.0 alpha with this caveat documented in README + INTENT + this RESULTS file.
+E2 passed its historical criterion. E3 fails the current raw-byte criterion.
+E1 recorded three control and three treatment responses from one author-run
+trial; it is not an effect estimate and does not establish drift prevention or
+downstream benefit. This record does not establish a current public release.
 
 Anything ≤ 0 in a future multi-trial sweep gets published unredacted per `INTENT.md` invariant #4.

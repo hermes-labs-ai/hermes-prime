@@ -16,6 +16,8 @@ AUTHORITY_FILES=(
     SECURITY.md
     INTENT.md
     CHANGELOG.md
+    evals/EVAL-PROTOCOL.md
+    evals/runs/2026-04-25/RESULTS.md
 )
 
 fail=0
