@@ -195,8 +195,13 @@ cmd_uninject() {
     fi
     # fall back to latest backup
     if [[ -n "$latest" ]]; then
-        if ! cat "$latest" > "$target"; then
-            echo "failed to restore backup: $target" >&2
+        if [[ -e "$target" || -L "$target" ]]; then
+            if ! cat "$latest" > "$target"; then
+                echo "failed to restore backup: $target" >&2
+                exit 1
+            fi
+        elif ! cp -p "$latest" "$target"; then
+            echo "failed to restore backup with metadata: $target" >&2
             exit 1
         fi
         echo "restored from backup: $latest -> $target"

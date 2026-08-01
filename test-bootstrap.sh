@@ -94,7 +94,19 @@ cp "$PROJ3/CLAUDE.md" "$PROJ3/original"
 "$BIN" --inject "$PROJ3" >/dev/null 2>&1
 "$BIN" --uninject "$PROJ3" >/dev/null 2>&1
 MODE3_AFTER=$(stat -f '%Lp' "$PROJ3/CLAUDE.md" 2>/dev/null || stat -c '%a' "$PROJ3/CLAUDE.md")
-if cmp -s "$PROJ3/original" "$PROJ3/CLAUDE.md" && [[ "$MODE3_AFTER" == "$MODE3" ]]; then
+
+PROJ9="$TMP/proj9"; mkdir -p "$PROJ9"
+printf '# Restrictive missing target\n' > "$PROJ9/CLAUDE.md"
+chmod 600 "$PROJ9/CLAUDE.md"
+cp "$PROJ9/CLAUDE.md" "$PROJ9/original"
+"$BIN" --inject "$PROJ9" >/dev/null 2>&1
+rm "$PROJ9/CLAUDE.md"
+"$BIN" --uninject "$PROJ9" >/dev/null 2>&1
+MODE9_AFTER=$(stat -f '%Lp' "$PROJ9/CLAUDE.md" 2>/dev/null || stat -c '%a' "$PROJ9/CLAUDE.md")
+if cmp -s "$PROJ3/original" "$PROJ3/CLAUDE.md" \
+    && [[ "$MODE3_AFTER" == "$MODE3" ]] \
+    && cmp -s "$PROJ9/original" "$PROJ9/CLAUDE.md" \
+    && [[ "$MODE9_AFTER" == "600" ]]; then
     assert "uninject byte-restores multi-paragraph file and mode" true
 else
     assert "uninject byte-restores multi-paragraph file and mode" false
