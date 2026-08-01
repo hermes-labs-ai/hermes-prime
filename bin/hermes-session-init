@@ -1,6 +1,6 @@
 #!/bin/bash
-# hermes-session-init — bootstrap a fresh Claude Code session with the
-# conventions required for recursive/emergent work.
+# hermes-session-init 0.2.1-alpha.1 (unreleased source candidate) — deliver a
+# versioned convention card to a fresh Claude Code session.
 #
 # Subcommands:
 #   --check                verify prerequisites; print one-line OK or fail.
@@ -80,26 +80,130 @@ cmd_uninject() {
     local proj="${1:-}"
     [[ -n "$proj" ]] || { echo "usage: hermes-session-init --uninject <project-dir>" >&2; exit 2; }
     [[ -d "$proj" ]] || { echo "not a directory: $proj" >&2; exit 2; }
-    local target="$proj/CLAUDE.md"
+    local target="$proj/CLAUDE.md" latest
+    # shellcheck disable=SC2012  # ls -t for mtime sort is fine here; backup names are timestamped + safe
+    latest=$(ls -1t "$proj"/CLAUDE.md.bak.* 2>/dev/null | head -1 || true)
     if [[ -f "$target" ]] && grep -qF "$BEGIN_MARK" "$target"; then
+        local target_size
+        target_size=$(wc -c < "$target" | tr -d ' ')
+
+        # Fragment-independent exact path for an unchanged injection into a
+        # pre-existing file. Restore only when the target is provably the
+        # latest backup bytes, one injected newline, and a marker-delimited
+        # suffix. If the prefix changed after injection, retain those edits by
+        # falling through to marker removal instead of restoring the backup.
+        if [[ -n "$latest" ]]; then
+            local backup_size separator block_first block_last prefix_matches
+            backup_size=$(wc -c < "$latest" | tr -d ' ')
+            prefix_matches=0
+            if [[ "$backup_size" -eq 0 ]]; then
+                prefix_matches=1
+            elif head -c "$backup_size" "$target" | cmp -s - "$latest"; then
+                prefix_matches=1
+            fi
+            if [[ "$target_size" -gt "$backup_size" && "$prefix_matches" -eq 1 ]]; then
+                separator=$(dd if="$target" bs=1 skip="$backup_size" count=1 2>/dev/null \
+                    | od -An -tu1 | tr -d ' ')
+                block_first=$(dd if="$target" bs=1 skip=$((backup_size + 1)) 2>/dev/null \
+                    | sed -n '1p')
+                block_last=$(dd if="$target" bs=1 skip=$((backup_size + 1)) 2>/dev/null \
+                    | tail -n 1)
+                if [[ "$separator" == "10" \
+                    && "$block_first" == "$BEGIN_MARK" \
+                    && "$block_last" == "$END_MARK" ]]; then
+                    if ! cat "$latest" > "$target"; then
+                        echo "failed to restore original target bytes: $target" >&2
+                        exit 1
+                    fi
+                    echo "uninjected (exact backup bytes restored): $target"
+                    exit 0
+                fi
+            fi
+        fi
+
+        # Fast path for blocks appended by cmd_inject: remove the exact byte
+        # suffix instead of reparsing the file. This preserves all preceding
+        # bytes when the currently resolved fragment matches the injected one.
+        if [[ -r "$FRAGMENT" ]]; then
+            local fragment_size
+            fragment_size=$(wc -c < "$FRAGMENT" | tr -d ' ')
+
+            if [[ "$target_size" -eq "$fragment_size" ]] \
+                && cmp -s "$target" "$FRAGMENT"; then
+                rm "$target"
+                echo "uninjected (removed CLAUDE.md created by injection): $target"
+                exit 0
+            fi
+
+            if [[ "$target_size" -gt "$fragment_size" ]] \
+                && tail -c "$fragment_size" "$target" | cmp -s - "$FRAGMENT"; then
+                local prefix_size separator
+                prefix_size=$((target_size - fragment_size - 1))
+                if [[ "$prefix_size" -ge 0 ]]; then
+                    separator=$(dd if="$target" bs=1 skip="$prefix_size" count=1 2>/dev/null \
+                        | od -An -tu1 | tr -d ' ')
+                    if [[ "$separator" == "10" ]]; then
+                        local exact_tmp; exact_tmp=$(mktemp)
+                        if [[ "$prefix_size" -gt 0 ]]; then
+                            dd if="$target" of="$exact_tmp" bs=1 count="$prefix_size" 2>/dev/null
+                        else
+                            : > "$exact_tmp"
+                        fi
+                        if ! cat "$exact_tmp" > "$target"; then
+                            rm -f "$exact_tmp"
+                            echo "failed to restore original target bytes: $target" >&2
+                            exit 1
+                        fi
+                        rm "$exact_tmp"
+                        echo "uninjected (exact injected suffix removed): $target"
+                        exit 0
+                    fi
+                fi
+            fi
+        fi
+
+        # A marker-delimited file with no backup is structurally equivalent to
+        # a CLAUDE.md created solely by injection, even if the current fragment
+        # changed. Do not apply this rule when a backup exists.
+        if [[ -z "$latest" ]]; then
+            local file_first file_last
+            file_first=$(sed -n '1p' "$target")
+            file_last=$(tail -n 1 "$target")
+            if [[ "$file_first" == "$BEGIN_MARK" && "$file_last" == "$END_MARK" ]]; then
+                rm "$target"
+                echo "uninjected (removed marker-only CLAUDE.md): $target"
+                exit 0
+            fi
+        fi
+
+        # Fallback for an externally added or edited marker block. Preserve
+        # line structure; do not collapse paragraphs or trim blank lines.
         local tmp; tmp=$(mktemp)
         awk -v b="$BEGIN_MARK" -v e="$END_MARK" '
             index($0,b){skip=1; next}
             skip && index($0,e){skip=0; next}
             !skip{print}
         ' "$target" > "$tmp"
-        # trim trailing blank lines from the cut
-        awk 'BEGIN{RS=""}{print}' "$tmp" > "$target" 2>/dev/null || mv "$tmp" "$target"
-        rm -f "$tmp"
+        if ! cat "$tmp" > "$target"; then
+            rm -f "$tmp"
+            echo "failed to remove marker block: $target" >&2
+            exit 1
+        fi
+        rm "$tmp"
         echo "uninjected (marker removed): $target"
         exit 0
     fi
     # fall back to latest backup
-    local latest
-    # shellcheck disable=SC2012  # ls -t for mtime sort is fine here; backup names are timestamped + safe
-    latest=$(ls -1t "$proj"/CLAUDE.md.bak.* 2>/dev/null | head -1 || true)
     if [[ -n "$latest" ]]; then
-        cp "$latest" "$target"
+        if [[ -e "$target" || -L "$target" ]]; then
+            if ! cat "$latest" > "$target"; then
+                echo "failed to restore backup: $target" >&2
+                exit 1
+            fi
+        elif ! cp -p "$latest" "$target"; then
+            echo "failed to restore backup with metadata: $target" >&2
+            exit 1
+        fi
         echo "restored from backup: $latest -> $target"
         exit 0
     fi

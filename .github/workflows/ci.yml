@@ -35,10 +35,24 @@ jobs:
           fi
 
       - name: Lint bash binary
-        run: shellcheck bin/hermes-session-init test-bootstrap.sh evals/preliminary-bootstrap-eval.sh
+        run: shellcheck bin/hermes-session-init test-bootstrap.sh evals/preliminary-bootstrap-eval.sh scripts/check-public-truth.sh
 
-      - name: Run mechanism tests (9 assertions)
+      - name: Run mechanism tests (11 assertions)
         run: bash test-bootstrap.sh
+
+      - name: Set up Python for MCP tests
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run MCP server tests (10 tests)
+        run: |
+          python -m pip install pytest
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 \
+            python -m pytest -p no:cacheprovider mcp-server/test_hermes_prime_mcp.py -q
+
+      - name: Check current public-truth surfaces
+        run: bash scripts/check-public-truth.sh
 
       - name: Run idempotency + roundtrip evals (E2 + E3, no claude-cli needed)
         run: bash evals/preliminary-bootstrap-eval.sh --skip-e1

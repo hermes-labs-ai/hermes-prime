@@ -1,14 +1,13 @@
 cff-version: 1.2.0
-message: "If you use hermes-prime in research or production tooling, please cite it."
+message: "Source candidate 0.2.1-alpha.1 is unreleased; no public release is implied."
 title: "hermes-prime: a session-priming bootstrap for Claude Code"
-abstract: "A bash bootstrap that injects a versioned CLAUDE.md fragment into a project so a fresh Claude Code session opens with grounding triggers, convention pointers, and tool-map already in scope. Per-project, marker-anchored, idempotent, fully reversible."
+abstract: "Two local surfaces deliver one versioned convention card: a marker-anchored Bash injector with byte-exact unedited rollback, and a read-only stdio MCP server."
 authors:
   - family-names: "Bosch"
     given-names: "Rolando"
     affiliation: "Hermes Labs"
     email: "roli@hermes-labs.ai"
-version: "0.1.0"
-date-released: "2026-04-25"
+version: "0.2.1-alpha.1"
 license: MIT
 repository-code: "https://github.com/hermes-labs-ai/hermes-prime"
 url: "https://hermes-labs.ai"

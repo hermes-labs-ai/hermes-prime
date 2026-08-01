@@ -1,6 +1,6 @@
 hermes-prime preliminary eval — 2026-04-25
-repo: /Users/rbr_lpci/Documents/projects/hermes-prime
-bin:  /Users/rbr_lpci/Documents/projects/hermes-prime/bin/hermes-session-init
+repo: [path redacted: local evaluation workspace]
+bin:  [path redacted: local evaluation workspace]
 ===
 
 [CALIBRATION] dry-testing score_response on 9 synthetic cases
@@ -8,8 +8,8 @@ bin:  /Users/rbr_lpci/Documents/projects/hermes-prime/bin/hermes-session-init
 [CALIBRATION] OK — scoring function categorizes correctly.
 
 === E1 — convention-recall test (with vs without bootstrap) ===
-E1 control_dir   = /var/folders/rl/4wlw8qps1mbck2hmdcfx0dx80000gn/T/hp-e1-ctrl-XXXX.YWDUiMuQJK (no CLAUDE.md)
-E1 treatment_dir = /var/folders/rl/4wlw8qps1mbck2hmdcfx0dx80000gn/T/hp-e1-trt-XXXX.0jrElmS3iy (CLAUDE.md present, marker injected)
+E1 control_dir   = [path redacted: local evaluation workspace] (no CLAUDE.md)
+E1 treatment_dir = [path redacted: local evaluation workspace] (CLAUDE.md present, marker injected)
 
   --- Q-ground ---
   Q: What tool would I run to externally ground a drifting session? Reply in one sentence.
@@ -47,5 +47,5 @@ E1 treatment_dir = /var/folders/rl/4wlw8qps1mbck2hmdcfx0dx80000gn/T/hp-e1-trt-XX
 
 ===
 MECHANISM EVALS (E2, E3): pass=2 fail=0
-E1 (empirical): see /Users/rbr_lpci/Documents/projects/hermes-prime/evals/runs/2026-04-25/E1_summary.txt for actual recall numbers.
-Run log: /Users/rbr_lpci/Documents/projects/hermes-prime/evals/runs/2026-04-25/eval-log.txt
+E1 (empirical): see [path redacted: local evaluation workspace] for actual recall numbers.
+Run log: [path redacted: local evaluation workspace]

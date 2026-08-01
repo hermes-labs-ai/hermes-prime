@@ -1,6 +1,9 @@
-# Eval Protocol — hermes-prime v0.1.0
+# Eval Protocol — hermes-prime 0.2.1-alpha.1 source candidate
 
-Three preliminary evals. E1 is the empirical claim test; E2 and E3 are mechanism tests that don't require `claude-cli`.
+Three preliminary evals. E1 is an exploratory convention-recall observation;
+E2 and E3 are mechanism tests that do not require `claude-cli`. The committed
+2026-04-25 record used an older whitespace-normalized E3 criterion; new runs
+must use the raw-byte criterion below.
 
 ## E1 — Convention-recall test (with vs without bootstrap)
 
@@ -44,7 +47,7 @@ Before running on real `claude-cli`, the scoring function is dry-tested with thr
 
 If recall lift is ≤0 (the bootstrap doesn't help, or hurts), the result is published unredacted and the package status is downgraded. This follows the binding null-result convention from `INTENT.md` invariant #4.
 
-### Limitations (v0.1.0)
+### Limitations of the historical E1 design
 
 - N=1 trial per condition. Real lift estimation needs multiple trials × multiple model versions; that's v0.2 work.
 - Three questions only. Larger probe sets needed for stable rates.
@@ -79,8 +82,11 @@ Repeated injection in CI loops or multi-agent orchestrators must not snowball CL
 
 ### Pass condition
 
-`pre_hash == post_hash` after normalizing trailing whitespace (the awk-based marker removal can leave or strip a trailing newline depending on file shape; whitespace-tolerant comparison is documented and explicit).
+`pre_hash == post_hash` on the raw files. Whitespace-normalized equality is
+diagnostic only and cannot produce a pass.
 
 ### Why this matters
 
-The bootstrap is reversible. A user who runs `--inject` and changes their mind must get back exactly what they started with.
+An unedited block appended by `--inject` must restore the exact prior bytes.
+Edited or externally supplied marker blocks use a separate line-preserving
+fallback and are not covered by this byte-exact criterion.
