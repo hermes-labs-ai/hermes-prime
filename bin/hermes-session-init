@@ -93,10 +93,15 @@ cmd_uninject() {
         # suffix. If the prefix changed after injection, retain those edits by
         # falling through to marker removal instead of restoring the backup.
         if [[ -n "$latest" ]]; then
-            local backup_size separator block_first block_last
+            local backup_size separator block_first block_last prefix_matches
             backup_size=$(wc -c < "$latest" | tr -d ' ')
-            if [[ "$target_size" -gt "$backup_size" ]] \
-                && head -c "$backup_size" "$target" | cmp -s - "$latest"; then
+            prefix_matches=0
+            if [[ "$backup_size" -eq 0 ]]; then
+                prefix_matches=1
+            elif head -c "$backup_size" "$target" | cmp -s - "$latest"; then
+                prefix_matches=1
+            fi
+            if [[ "$target_size" -gt "$backup_size" && "$prefix_matches" -eq 1 ]]; then
                 separator=$(dd if="$target" bs=1 skip="$backup_size" count=1 2>/dev/null \
                     | od -An -tu1 | tr -d ' ')
                 block_first=$(dd if="$target" bs=1 skip=$((backup_size + 1)) 2>/dev/null \

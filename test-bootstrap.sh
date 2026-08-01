@@ -68,9 +68,16 @@ sed 's/original prefix/edited prefix/' "$PROJ6/CLAUDE.md" > "$PROJ6/edited"
 mv "$PROJ6/edited" "$PROJ6/CLAUDE.md"
 HERMES_SESSION_INIT_FRAGMENT="$TMP/missing-fragment" \
     "$BIN" --uninject "$PROJ6" >/dev/null 2>&1
+
+PROJ8="$TMP/proj8"; mkdir -p "$PROJ8"
+: > "$PROJ8/CLAUDE.md"
+"$BIN" --inject "$PROJ8" >/dev/null 2>&1
+HERMES_SESSION_INIT_FRAGMENT="$TMP/different-fragment" \
+    "$BIN" --uninject "$PROJ8" >/dev/null 2>&1
 if cmp -s "$PROJ2/original" "$PROJ2/CLAUDE.md" \
     && grep -qF 'edited prefix' "$PROJ6/CLAUDE.md" \
-    && ! grep -qF '<!-- session-init: BEGIN -->' "$PROJ6/CLAUDE.md"; then
+    && ! grep -qF '<!-- session-init: BEGIN -->' "$PROJ6/CLAUDE.md" \
+    && [[ -f "$PROJ8/CLAUDE.md" && ! -s "$PROJ8/CLAUDE.md" ]]; then
     assert "stale-fragment exact restore preserves later prefix edits" true
 else
     assert "stale-fragment exact restore preserves later prefix edits" false
