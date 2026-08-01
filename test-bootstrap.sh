@@ -26,6 +26,15 @@ assert() {
     fi
 }
 
+file_mode() {
+    local path="$1"
+    if stat -c '%a' "$path" >/dev/null 2>&1; then
+        stat -c '%a' "$path"
+    else
+        stat -f '%Lp' "$path"
+    fi
+}
+
 if "$BIN" --check >/dev/null 2>&1; then
     assert "check exits 0" true
 else
@@ -89,11 +98,11 @@ assert "uninject restores absent CLAUDE.md" test ! -e "$PROJ/CLAUDE.md"
 PROJ3="$TMP/proj3"; mkdir -p "$PROJ3"
 printf '# Existing\n\nFirst paragraph.\n\nSecond paragraph.\n' > "$PROJ3/CLAUDE.md"
 chmod 640 "$PROJ3/CLAUDE.md"
-MODE3=$(stat -f '%Lp' "$PROJ3/CLAUDE.md" 2>/dev/null || stat -c '%a' "$PROJ3/CLAUDE.md")
+MODE3=$(file_mode "$PROJ3/CLAUDE.md")
 cp "$PROJ3/CLAUDE.md" "$PROJ3/original"
 "$BIN" --inject "$PROJ3" >/dev/null 2>&1
 "$BIN" --uninject "$PROJ3" >/dev/null 2>&1
-MODE3_AFTER=$(stat -f '%Lp' "$PROJ3/CLAUDE.md" 2>/dev/null || stat -c '%a' "$PROJ3/CLAUDE.md")
+MODE3_AFTER=$(file_mode "$PROJ3/CLAUDE.md")
 
 PROJ9="$TMP/proj9"; mkdir -p "$PROJ9"
 printf '# Restrictive missing target\n' > "$PROJ9/CLAUDE.md"
@@ -102,7 +111,7 @@ cp "$PROJ9/CLAUDE.md" "$PROJ9/original"
 "$BIN" --inject "$PROJ9" >/dev/null 2>&1
 rm "$PROJ9/CLAUDE.md"
 "$BIN" --uninject "$PROJ9" >/dev/null 2>&1
-MODE9_AFTER=$(stat -f '%Lp' "$PROJ9/CLAUDE.md" 2>/dev/null || stat -c '%a' "$PROJ9/CLAUDE.md")
+MODE9_AFTER=$(file_mode "$PROJ9/CLAUDE.md")
 if cmp -s "$PROJ3/original" "$PROJ3/CLAUDE.md" \
     && [[ "$MODE3_AFTER" == "$MODE3" ]] \
     && cmp -s "$PROJ9/original" "$PROJ9/CLAUDE.md" \
