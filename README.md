@@ -95,6 +95,8 @@ hermes-session-init --uninject ~/Documents/projects/some-project
 | `--inject <project>` | Appends the fragment to `<project>/CLAUDE.md` between markers. Backs up existing `CLAUDE.md` to `CLAUDE.md.bak.<timestamp>`. Idempotent: re-running is a no-op. | 0 |
 | `--uninject <project>` | Removes the exact suffix added by `--inject`, byte-restoring pre-existing content or removing a `CLAUDE.md` created by injection. Falls back to line-preserving marker removal for edited blocks, or the latest backup when no marker remains. | 0 ok / 1 not-found |
 
+> Note: `hermes-ground` is an internal Hermes Labs grounding tool. It is not publicly released; the convention simply describes the orchestrator behavior it triggers.
+
 ## What gets injected
 
 A short markdown block containing:
