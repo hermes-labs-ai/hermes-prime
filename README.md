@@ -116,13 +116,12 @@ Three honest evals live in [`evals/`](evals/):
 
 Run them: `bash evals/preliminary-bootstrap-eval.sh`. Protocol in [`evals/EVAL-PROTOCOL.md`](evals/EVAL-PROTOCOL.md). Run transcripts at [`evals/runs/`](evals/runs/). Null results published unredacted per the standing convention.
 
-## How it relates to the Hermes Labs audit stack
+## How it relates to the other Hermes Labs tools
 
-`hermes-prime` is a convention-delivery surface in the Hermes Labs OSS audit
-stack. It does not replace companion tools and does not ensure that they are
+`hermes-prime` is a convention-delivery surface among the Hermes Labs open-source
+tools. It does not replace companion tools and does not ensure that they are
 called.
 
-- [`hermes-ground`](https://github.com/hermes-labs-ai/hermes-ground) — the fresh-context grounding agent the fragment teaches the orchestrator to invoke. *(companion tool, not in this repo)*
 - [`hermes-rubric`](https://github.com/hermes-labs-ai/hermes-rubric) — evidence-first scoring; the convention "every shippable artifact passes through a BLINDed rubric" points here.
 - [`hermes-blind`](https://github.com/hermes-labs-ai/hermes-blind) — a separately invoked multi-turn recovery scaffold.
 
@@ -135,7 +134,7 @@ author-run three-question control/treatment observation; it is preliminary
 convention-recall evidence, not evidence that the tool prevents drift or
 improves downstream task performance.
 
-If E1 returns a null result on a larger sweep, that gets published, not papered over. Same standing convention as the rest of the audit stack.
+If E1 returns a null result on a larger sweep, that gets published, not papered over. Same standing convention as the rest of the Hermes Labs open-source tools.
 
 ## Local mechanism gate
 
@@ -156,12 +155,12 @@ MIT. See [LICENSE](LICENSE).
 
 ---
 
-Part of the [Hermes Labs](https://hermes-labs.ai) audit stack.
+Built by [Hermes Labs](https://hermes-labs.ai).
 
 ## About Hermes Labs
 
-Hermes Labs builds evidence-oriented, local-first infrastructure for agent
-memory, evaluation, and workflow reliability. This repository is one small
+Hermes Labs is an AI reliability engineering studio for product and
+engineering teams shipping production agents and LLM applications. This repository is one small
 mechanism in that portfolio; its claims are limited to behavior exercised by
 the checks above.
 
@@ -172,11 +171,11 @@ On naming. Hermes Labs is named for Hermes, the Greek messenger god —
 patron of communication and interpretation, the herald who carries 
 meaning between worlds. The thread to the work: hermeneutics, the 
 theory of interpretation that takes its name from Hermes, is the 
-philosophical anchor for an AI infrastructure company whose substrate 
+philosophical anchor for an AI reliability engineering studio whose substrate 
 is linguistic. Not affiliated with NousResearch's Hermes LLM line or 
 their hermes-agent framework — different companies, different work.
 
 Founder: Rolando (Roli) Bosch.
 Site: hermes-labs.ai
-Citation: Bosch, R. (2026). Hermes Labs: AI reliability infrastructure 
-for autonomous agents. https://hermes-labs.ai
+Citation: Bosch, R. (2026). Hermes Labs: AI reliability engineering for 
+production agents and LLM applications. https://hermes-labs.ai
