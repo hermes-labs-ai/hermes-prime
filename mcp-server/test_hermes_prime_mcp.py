@@ -43,6 +43,34 @@ def test_initialize():
     assert "protocolVersion" in resp["result"]
 
 
+def test_initialize_echoes_supported_protocol_version():
+    [resp] = _rpc([
+        {
+            "jsonrpc": "2.0",
+            "id": 1,
+            "method": "initialize",
+            "params": {"protocolVersion": "2025-06-18", "capabilities": {}},
+        }
+    ])
+    assert resp["result"]["protocolVersion"] == "2025-06-18"
+    [resp] = _rpc([
+        {
+            "jsonrpc": "2.0",
+            "id": 1,
+            "method": "initialize",
+            "params": {"protocolVersion": "1999-01-01"},
+        }
+    ])
+    assert resp["result"]["protocolVersion"] == "2024-11-05"
+
+
+def test_initialize_carries_instructions():
+    [resp] = _rpc([{"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}}])
+    instructions = resp["result"]["instructions"]
+    assert isinstance(instructions, str) and instructions.strip()
+    assert "get_conventions" in instructions
+
+
 def test_ping():
     [resp] = _rpc([{"jsonrpc": "2.0", "id": 2, "method": "ping"}])
     assert resp["id"] == 2

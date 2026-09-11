@@ -28,6 +28,26 @@ FRAGMENT_ROOT = Path(
 DEFAULT_FRAGMENT = FRAGMENT_ROOT / "CLAUDE-fragment.md"
 SCOPED_DIR = Path(__file__).resolve().parent / "fragments"
 
+# ── Protocol constants ───────────────────────────────────────────────────────
+
+# The server has no version-specific behavior (tools/list + tools/call only),
+# so it echoes any protocol revision it recognizes and otherwise answers with
+# the oldest one, letting the host decide whether to continue.
+DEFAULT_PROTOCOL_VERSION = "2024-11-05"
+SUPPORTED_PROTOCOL_VERSIONS = ("2024-11-05", "2025-03-26", "2025-06-18")
+
+# Returned in the initialize result. MCP hosts such as Claude Code surface
+# server instructions to the model, so this is what prompts a fresh session
+# to fetch the card; a tool description alone is not read until a tool is
+# considered.
+SERVER_INSTRUCTIONS = (
+    "hermes-prime serves a versioned convention card for recursive or "
+    "emergent work. Call get_conventions once at the start of such a session "
+    "and read the returned markdown before planning; skip it for short "
+    "single-task fixes. The card is advisory text: it does not enforce "
+    "anything or call other tools."
+)
+
 
 def _read_fragment(path: Path) -> str:
     try:
@@ -137,10 +157,14 @@ def main() -> None:
         request_id = msg.get("id")
 
         if method == "initialize":
+            requested = (msg.get("params") or {}).get("protocolVersion")
+            protocol = requested if requested in SUPPORTED_PROTOCOL_VERSIONS \
+                else DEFAULT_PROTOCOL_VERSION
             send_result(request_id, {
-                "protocolVersion": "2024-11-05",
+                "protocolVersion": protocol,
                 "capabilities": {"tools": {}},
                 "serverInfo": {"name": "hermes-prime", "version": "0.2.1-alpha.1"},
+                "instructions": SERVER_INSTRUCTIONS,
             })
 
         elif method == "notifications/initialized":
