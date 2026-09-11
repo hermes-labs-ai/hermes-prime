@@ -10,12 +10,34 @@ evidence that a GitHub release object or matching public tag exists.
 This source state is not a public tag or release. Any push, tag, or release
 requires separate owner authorization and public readback.
 
+### Added
+
+- MCP `initialize` result now carries an `instructions` string telling the
+  host session to call `get_conventions` once before recursive or emergent
+  work. Claude Code surfaces server instructions to the model, so the MCP
+  surface no longer depends on the model noticing a tool description on its
+  own.
+- MCP server echoes a recognized client `protocolVersion` (2024-11-05,
+  2025-03-26, 2025-06-18) instead of always answering 2024-11-05. Two new
+  tests cover both behaviors (12 MCP tests total).
+- README and `mcp-server/README.md` record the registration command as
+  verified against Claude Code 2.1.268 (`claude mcp list` reports Connected).
+
 ### Changed
 
+- `mcp-server/fragments/session-init.md` no longer claims to be "same
+  content as the default fragment"; it is labeled as a condensed subset
+  (grounding triggers plus the most-forgotten rule).
+- `SPEC.md`, `PLAN-V2.md`, and `MCP-SCOPE-INVESTIGATION.md` carry a
+  historical header naming what shipped and what did not; bodies unchanged.
+- `CONTRIBUTING.md` and `INTENT.md` describe both surfaces: 11 Bash
+  assertions, 12 MCP tests, the 8000-character fragment budget, and
+  stdlib-only Python for the MCP server. `llms.txt` About block aligned with
+  the README positioning.
 - `--uninject` now byte-restores an unedited injected suffix, including
   multi-paragraph and no-final-newline files, and removes a `CLAUDE.md` created
   solely by injection.
-- Hosted CI now includes the 10-test MCP suite alongside ShellCheck, the
+- Hosted CI now includes the MCP suite alongside ShellCheck, the
   11-assertion Bash suite, and E2/E3 mechanism checks.
 - README, Security, Citation, MCP handshake, Bash help, and machine-facing
   documentation identify source version `0.2.1-alpha.1` and its unreleased state.
@@ -33,7 +55,7 @@ requires separate owner authorization and public readback.
 ### Verified locally
 
 - Bash mechanism suite: 11/11.
-- MCP suite: 10/10.
+- MCP suite: 12/12.
 - E2/E3: pass with identical E3 raw hashes.
 
 ## [0.2.0] — 2026-04-26

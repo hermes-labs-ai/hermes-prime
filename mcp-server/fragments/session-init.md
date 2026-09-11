@@ -1,13 +1,18 @@
 <!-- session-init: BEGIN -->
 <!-- Served by hermes-prime MCP server (scope_class=session-init). -->
 
-## Session conventions (recursive/emergent work)
+## Session conventions (recursive/emergent work) — condensed
 
-This is the existing session-init scope as a proof-of-concept of the
-`scope_class` parameter. Same content as the default fragment today;
-divergence happens when scopes earn their own conventions.
+This scoped fragment is a proof-of-concept of the `scope_class` parameter.
+It is a condensed subset of the default card: the seven grounding triggers
+and the rule most often forgotten. The default fragment (`get_conventions`
+with no `scope_class`) carries the full four conventions with their
+mechanical forms and manual fallbacks; read that one when tokens allow.
 
-### When to call `hermes-ground`
+### When to take a fresh-context outside view
+
+The Hermes Labs implementation is the internal `hermes-ground` tool; any
+fresh-context reviewer (a `claude --print` subagent, a colleague) counts.
 
 - 3+ consecutive commits without a user-visible ship.
 - A new scope class, taxonomy, or named architecture is proposed mid-session.

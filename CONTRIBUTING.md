@@ -4,11 +4,11 @@ Thanks for looking. Tiny tool, narrow scope — here's how to help without break
 
 ## Scope
 
-This project is a bash bootstrap (~120 LOC) plus a markdown fragment. It primes a fresh Claude Code session with the Hermes Labs conventions. That's it.
+This project is a bash bootstrap plus a markdown fragment, with a stdlib-Python MCP server that serves the same fragment over stdio. It delivers the Hermes Labs convention card to a fresh Claude Code session. That's it.
 
 Accepted:
 
-- Bug fixes in `bin/hermes-session-init` (POSIX-compliance issues, edge cases in `--inject`/`--uninject`).
+- Bug fixes in `bin/hermes-session-init` (POSIX-compliance issues, edge cases in `--inject`/`--uninject`) and in `mcp-server/hermes_prime_mcp.py` (protocol handling, fragment resolution).
 - New eval cases in `evals/` — especially recall-test prompts that probe different conventions.
 - Documentation corrections.
 - CI improvements.
@@ -16,8 +16,8 @@ Accepted:
 
 Not accepted:
 
-- New runtime dependencies. Bash + coreutils only is part of the tool's shape.
-- A Python rewrite. The bash version is the spec.
+- New runtime dependencies. The Bash surface is bash + coreutils only; the MCP server is Python stdlib only (no `mcp` SDK).
+- A rewrite of the Bash bootstrap in another language. The bash version is the spec for `CLAUDE.md` injection; the MCP server is a separate read-only surface, not a replacement.
 - A "global mode" that writes into `~/CLAUDE.md`. That's a different problem and the open-design-questions section in `SPEC.md` flags why.
 - Auto-call-on-emergence — auto-calling `hermes-ground` from a hook can fire on false positives and burn user trust. Stays out of scope until a clear false-positive rate target is set.
 
@@ -26,18 +26,18 @@ Not accepted:
 ```bash
 git clone https://github.com/hermes-labs-ai/hermes-prime
 cd hermes-prime
-bash test-bootstrap.sh          # 9 assertions, must all pass
-bash evals/preliminary-bootstrap-eval.sh  # 3 evals
+./scripts/local-ci.sh           # shellcheck + 11 Bash assertions + 12 MCP tests + fragment checks
+bash evals/preliminary-bootstrap-eval.sh --skip-e1  # E2/E3 mechanism evals (E1 needs claude-cli)
 ```
 
-If `shellcheck` is installed: `shellcheck bin/hermes-session-init`.
+The MCP suite alone: `python3 -m pytest mcp-server/test_hermes_prime_mcp.py -q` (needs `pytest`, nothing else).
 
 ## Adding a fragment-content change
 
 The fragment in `CLAUDE-fragment.md` is the *contract*. Changes must:
 
 - Preserve the marker comments `<!-- session-init: BEGIN -->` and `<!-- session-init: END -->` exactly.
-- Stay under ~50 lines (the token cost is paid every session that injects).
+- Stay within the 8000-character budget enforced by `scripts/local-ci.sh` (the token cost is paid every session that injects).
 - Not introduce a tool reference without the tool actually being installable.
 - Ship with an updated E1 recall-test case if the convention list changes.
 

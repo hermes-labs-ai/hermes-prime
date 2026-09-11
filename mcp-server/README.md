@@ -29,8 +29,11 @@ scope:
 claude mcp add --scope user hermes-prime -- python3 "$PWD/mcp-server/hermes_prime_mcp.py"
 ```
 
-Use `claude mcp get hermes-prime` or `claude mcp list` to verify registration.
-The tools appear in sessions covered by the selected scope.
+Use `claude mcp get hermes-prime` or `claude mcp list` to verify registration;
+both should report the server as Connected (verified with Claude Code 2.1.268
+on 2026-09-11). The tools appear in sessions covered by the selected scope,
+and the server's `initialize` instructions tell the session to call
+`get_conventions` once before recursive or emergent work.
 
 ## Verify it works
 
@@ -63,4 +66,4 @@ Scoped fragments live in `mcp-server/fragments/<scope_class>.md`.
 python3 -m pytest mcp-server/test_hermes_prime_mcp.py -v
 ```
 
-10 tests, stdlib-only (subprocess + json), no `mcp` SDK dependency.
+12 tests, stdlib-only (subprocess + json), no `mcp` SDK dependency.

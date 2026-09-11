@@ -49,12 +49,12 @@ run_check "bash test-bootstrap.sh (11 assertions)" bash test-bootstrap.sh
 # 3. MCP server tests (Python)
 if [[ -d mcp-server ]]; then
     if command -v pytest >/dev/null 2>&1; then
-        run_check "mcp-server pytest (10 tests)" env \
+        run_check "mcp-server pytest (12 tests)" env \
             PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 \
             pytest -q -p no:cacheprovider mcp-server/test_hermes_prime_mcp.py
     elif command -v python3 >/dev/null 2>&1 \
         && python3 -c 'import pytest' >/dev/null 2>&1; then
-        run_check "mcp-server pytest (10 tests)" env \
+        run_check "mcp-server pytest (12 tests)" env \
             PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 \
             python3 -m pytest -q -p no:cacheprovider mcp-server/test_hermes_prime_mcp.py
     else

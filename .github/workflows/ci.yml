@@ -15,9 +15,8 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     env:
-      # CI doesn't have hermes-ground / hermes-rubric-blinded / handbook installed.
-      # The test script handles --check failure gracefully (it skips the check assertion
-      # if prereqs are missing, but still runs the print/inject/uninject assertions).
+      # Pin the fragment explicitly. --check needs only the fragment file; companion
+      # tools (hermes-ground, hermes-rubric-blinded, handbook) are informational.
       HERMES_SESSION_INIT_FRAGMENT: ${{ github.workspace }}/CLAUDE-fragment.md
 
     steps:
@@ -45,7 +44,7 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Run MCP server tests (10 tests)
+      - name: Run MCP server tests (12 tests)
         run: |
           python -m pip install pytest
           PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 \
