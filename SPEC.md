@@ -1,5 +1,12 @@
 # session-init — spec
 
+> **Historical (v0.1 design spec, 2026-04-25).** Kept as the original
+> function spec and rollback contract. The mechanism it describes is still
+> what ships, but line counts, the handbook references, and the open
+> questions reflect v0.1. Current surfaces, scope, and invariants live in
+> `README.md`, `AGENTS.md`, and `INTENT.md`; the MCP server (not covered
+> here) is documented in `mcp-server/README.md`.
+
 ## What this is
 
 A small bootstrap that primes a fresh Claude Code session with the conventions

@@ -22,7 +22,7 @@ surfaces: a marker-anchored Bash injector and a read-only stdio MCP server.
 
 - Modifying global config (`~/CLAUDE.md`, `~/.claude/`, etc).
 - Auto-invoking `hermes-ground` or any other companion tool. The fragment teaches the orchestrator *when* to call; it does not call.
-- Adding runtime dependencies beyond bash + coreutils.
+- Adding runtime dependencies beyond bash + coreutils for the Bash surface, or beyond the Python standard library for the MCP server.
 - Shipping a noun-phrase label for any session-priming concept that does not have files at a path. The repo name `hermes-prime` is acceptable because files now exist.
 - Making empirical claims unverified by `evals/runs/` transcripts.
 - Auto-pruning backup files. Retention is the user's call.
@@ -34,11 +34,11 @@ surfaces: a marker-anchored Bash injector and a read-only stdio MCP server.
 - Replacing `hermes-blind` or claiming that convention delivery prevents drift.
 - Cross-session state (each session that wants the conventions has to inject or read the fragment).
 - Auto-refresh on memory-file change (re-inject manually).
-- Generation-task convention-injection beyond what the four standing-feedback files cover.
+- Generation-task convention-injection beyond the four conventions inlined in `CLAUDE-fragment.md`.
 
 ## Design invariants
 
-1. **Mechanism is testable in isolation.** `test-bootstrap.sh` runs without `claude-cli` and asserts 11 mechanism properties.
+1. **Mechanism is testable in isolation.** `test-bootstrap.sh` runs without `claude-cli` and asserts 11 mechanism properties; `mcp-server/test_hermes_prime_mcp.py` drives the MCP server over stdio with 12 stdlib-only tests.
 2. **Empirical claim is testable end-to-end.** `evals/preliminary-bootstrap-eval.sh` runs against `claude --print` and reports recall rates with raw transcripts.
 3. **Calibrate before ship.** The eval scoring script is dry-tested with synthetic Y/N/partial responses before being run on real transcripts.
 4. **Honest null result.** If E1 returns null on a larger sweep, the result is published. The package gets archived if the mechanism doesn't move the recall needle.
@@ -49,7 +49,7 @@ surfaces: a marker-anchored Bash injector and a read-only stdio MCP server.
 
 ## What "done" means for the 0.2.1-alpha.1 source candidate
 
-- 11/11 Bash assertions and 10/10 MCP tests pass locally; hosted coverage remains unevaluated until a public run exists.
+- 11/11 Bash assertions and 12/12 MCP tests pass locally and in the hosted `ci` workflow on Ubuntu and macOS.
 - E1 produces actual recall numbers (positive, partial, or null) with raw transcripts committed.
 - E2 and E3 pass.
 - E3 requires identical raw pre/post hashes.

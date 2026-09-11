@@ -1,5 +1,12 @@
 # hermes-prime v0.2 plan — self-contained fragment + paid-tier seed
 
+> **Historical (executed).** This plan shipped as source version 0.2.0 on
+> 2026-04-26 (see `CHANGELOG.md`). Not done from the migration path: the
+> archived v1 fragment copy (step 2), the multi-trial E1 rerun (step 7), and
+> a public tag (step 8 — the tree remains unreleased). The paid-tier section
+> is a sketch, not a commitment. Kept unedited below as the record of the
+> decision.
+
 > **Strategic call (Roli, 2026-04-26):** ship hermes-prime as fully free OSS
 > with the Hermes Labs convention stack inlined into the fragment (showcase
 > tech via dogfooding). The adaptive tier — extracting users' own

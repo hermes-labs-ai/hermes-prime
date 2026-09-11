@@ -1,5 +1,11 @@
 # hermes-prime MCP-server scope investigation (read-only)
 
+> **Historical (implemented).** The recommendation below — bash + MCP, stdlib
+> stdio server, two read-only tools — shipped as `mcp-server/`. The
+> `pyproject.toml` entry point it lists was not built; registration is the
+> `claude mcp add` command in `mcp-server/README.md`. Kept as the record of
+> why there are two surfaces.
+
 Date: 2026-04-24
 
 ```

@@ -53,7 +53,10 @@ claude mcp add --scope local hermes-prime -- python3 "$PWD/mcp-server/hermes_pri
 ```
 
 Run that command from the repository root. Local scope loads the server for the
-current project. Use `--scope user` only if you intend to make the same command
+current project. Last verified against Claude Code 2.1.268 on 2026-09-11:
+`claude mcp list` reports the server as Connected. The server's `initialize`
+response carries a short instructions string, which Claude Code shows to the
+model so a fresh session knows to call `get_conventions`. Use `--scope user` only if you intend to make the same command
 available to your own sessions across projects. Then call `get_conventions`
 from a session covered by the selected scope. Pure stdlib, no third-party
 runtime dependencies. Full registration and removal instructions are in
@@ -131,7 +134,7 @@ called.
 
 **Source version 0.2.1-alpha.1 — unreleased alpha candidate.** There is no public
 0.2.1-alpha.1 tag or GitHub release, and this branch does not authorize one. The
-mechanism suite contains 11 Bash assertions plus 10 MCP tests. E1 is one
+mechanism suite contains 11 Bash assertions plus 12 MCP tests. E1 is one
 author-run three-question control/treatment observation; it is preliminary
 convention-recall evidence, not evidence that the tool prevents drift or
 improves downstream task performance.
@@ -146,9 +149,9 @@ Before requesting any push or release, run the local mechanism gate:
 ./scripts/local-ci.sh
 ```
 
-It runs ShellCheck, the 11-assertion Bash suite, the 10-test MCP suite, and
-fragment size/marker checks. The proposed hosted workflow also runs MCP tests
-on macOS and Ubuntu. Exit 0 is evidence only for those named checks at the
+It runs ShellCheck, the 11-assertion Bash suite, the 12-test MCP suite, and
+fragment size/marker checks. The hosted workflow (`.github/workflows/ci.yml`)
+runs the same suites on macOS and Ubuntu. Exit 0 is evidence only for those named checks at the
 current tree; it is not push, release, or publication authorization.
 
 ## License

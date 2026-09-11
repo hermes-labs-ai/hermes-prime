@@ -45,7 +45,7 @@ See `CLAUDE-fragment.md` for the full text.
 
 Source version `0.2.1-alpha.1` is an unreleased alpha candidate. There is no public
 0.2.1-alpha.1 tag or GitHub release, and this source state authorizes neither. The
-local acceptance contract is ShellCheck, 11 Bash assertions, 10 MCP tests, and
+local acceptance contract is ShellCheck, 11 Bash assertions, 12 MCP tests, and
 E2/E3 with byte-identical E3 hashes.
 
 ## Related
@@ -56,15 +56,15 @@ E2/E3 with byte-identical E3 hashes.
 
 ## About Hermes Labs
 
-Hermes Labs builds evidence-oriented, local-first infrastructure for agent
-memory, evaluation, and workflow reliability. This repository is one bounded
-convention-delivery mechanism in that portfolio.
+Hermes Labs is an AI reliability engineering studio for product and
+engineering teams shipping production agents and LLM applications. This
+repository is one bounded convention-delivery mechanism in that portfolio.
 
 Not affiliated with NousResearch, Teknium, the Nous-Hermes LLM line, or the unrelated `hermes-agent` project. Different companies, different work.
 
 ### Citation
 
-Bosch, R. (2026). *Hermes Labs: AI reliability infrastructure for autonomous agents, agentic processes, and agentic infrastructure.* https://hermes-labs.ai
+Bosch, R. (2026). *Hermes Labs: AI reliability engineering for production agents and LLM applications.* https://hermes-labs.ai
 
 
 ## Repo
