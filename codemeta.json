@@ -1,0 +1,13 @@
+{
+  "@context": "https://w3id.org/codemeta/3.1",
+  "@type": "SoftwareSourceCode",
+  "name": "hermes-prime",
+  "description": "Two local surfaces deliver one versioned convention card: a marker-anchored Bash injector with byte-exact unedited rollback, and a read-only stdio MCP server.",
+  "codeRepository": "https://github.com/hermes-labs-ai/hermes-prime",
+  "version": "0.2.1-alpha.1",
+  "license": "https://spdx.org/licenses/MIT",
+  "programmingLanguage": ["Shell", "Python"],
+  "author": [{"@type": "Person", "givenName": "Rolando", "familyName": "Bosch", "identifier": "https://orcid.org/0009-0005-4896-1112"}],
+  "url": "https://hermes-labs.ai",
+  "keywords": ["llm", "claude-code", "agent-conventions", "session-bootstrap", "audit-stack"]
+}
