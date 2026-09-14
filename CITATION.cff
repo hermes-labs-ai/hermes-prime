@@ -3,8 +3,9 @@ message: "Source candidate 0.2.1-alpha.1 is unreleased; no public release is imp
 title: "hermes-prime: a session-priming bootstrap for Claude Code"
 abstract: "Two local surfaces deliver one versioned convention card: a marker-anchored Bash injector with byte-exact unedited rollback, and a read-only stdio MCP server."
 authors:
-  - family-names: "Bosch"
+  - family-names: "Bosch Rodriguez"
     given-names: "Rolando"
+    orcid: "https://orcid.org/0009-0005-4896-1112"
     affiliation: "Hermes Labs"
     email: "roli@hermes-labs.ai"
 version: "0.2.1-alpha.1"
