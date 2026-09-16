@@ -13,7 +13,33 @@ Pure stdlib. No third-party runtime dependencies.
   else falls back to the default fragment.
 - `list_scopes` — enumerates available scoped fragments.
 
-## Register in Claude Code
+## Install from PyPI (packaged console script)
+
+Once published (see [Packaging status](#packaging-status) below), the server
+installs as a standalone console script with no repo checkout required:
+
+```bash
+pip install hermes-prime-mcp
+hermes-prime-mcp   # speaks MCP JSON-RPC over stdio
+```
+
+or run it without installing, via `uvx`:
+
+```bash
+uvx --from hermes-prime-mcp hermes-prime-mcp
+```
+
+Register the installed script directly with Claude Code:
+
+```bash
+claude mcp add --scope local hermes-prime -- hermes-prime-mcp
+```
+
+Set `HERMES_PRIME_FRAGMENT_ROOT=/path/to/your/project` if you want the
+packaged server to read a `CLAUDE-fragment.md` outside its own install
+directory (see [Configuration](#configuration)).
+
+## Register in Claude Code (from a repo checkout)
 
 Run from the repository root. Local scope loads the command for your sessions
 in the current project:
@@ -67,3 +93,14 @@ python3 -m pytest mcp-server/test_hermes_prime_mcp.py -v
 ```
 
 12 tests, stdlib-only (subprocess + json), no `mcp` SDK dependency.
+
+## Packaging status
+
+- `pyproject.toml` (repo root) builds an sdist/wheel named `hermes-prime-mcp`
+  exposing the `hermes-prime-mcp` console script via `python -m build`.
+- `server.json` (repo root) is the MCP Registry manifest, matching the
+  registry's `2025-12-11` `server.schema.json`.
+- **Not yet done by this change, remains for the repo owner:** `twine upload`
+  to PyPI, a tagged GitHub release, and `mcp-publisher publish` (or the
+  registry's GitHub Action) to submit `server.json`. This branch does not
+  create a PyPI credential, a git tag, or a GitHub Release.

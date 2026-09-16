@@ -59,7 +59,9 @@ response carries a short instructions string, which Claude Code shows to the
 model so a fresh session knows to call `get_conventions`. Use `--scope user` only if you intend to make the same command
 available to your own sessions across projects. Then call `get_conventions`
 from a session covered by the selected scope. Pure stdlib, no third-party
-runtime dependencies. Full registration and removal instructions are in
+runtime dependencies. Full registration and removal instructions, plus the
+packaged `pip install hermes-prime-mcp` console-script path and the
+`server.json` MCP Registry manifest, are documented in
 [`mcp-server/README.md`](mcp-server/README.md).
 
 ## Install (bash binary)
