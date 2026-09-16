@@ -1,0 +1,4 @@
+include mcp-server/README.md
+include mcp-server/fragments/*.md
+include CLAUDE-fragment.md
+include LICENSE

@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hermes-prime-mcp"
+version = "0.2.1a1"
+description = "Read-only stdio MCP server that serves a versioned convention card (get_conventions / list_scopes) to a fresh Claude Code session."
+readme = "mcp-server/README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+authors = [
+    { name = "Rolando Bosch", email = "roli@hermes-labs.ai" },
+]
+keywords = [
+    "mcp",
+    "model-context-protocol",
+    "claude-code",
+    "agent-conventions",
+    "session-bootstrap",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.urls]
+Homepage = "https://github.com/hermes-labs-ai/hermes-prime"
+Repository = "https://github.com/hermes-labs-ai/hermes-prime"
+Issues = "https://github.com/hermes-labs-ai/hermes-prime/issues"
+
+[project.scripts]
+hermes-prime-mcp = "hermes_prime_mcp:main"
+
+[tool.setuptools]
+py-modules = ["hermes_prime_mcp"]
+package-dir = { "" = "mcp-server" }

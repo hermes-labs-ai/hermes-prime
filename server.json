@@ -1,0 +1,44 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.hermes-labs-ai/hermes-prime",
+  "title": "Hermes Prime",
+  "description": "Read-only stdio MCP server that serves a versioned convention card (get_conventions / list_scopes) to a fresh Claude Code session.",
+  "websiteUrl": "https://github.com/hermes-labs-ai/hermes-prime",
+  "repository": {
+    "url": "https://github.com/hermes-labs-ai/hermes-prime",
+    "source": "github"
+  },
+  "version": "0.2.1-alpha.1",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "registryBaseUrl": "https://pypi.org",
+      "identifier": "hermes-prime-mcp",
+      "version": "0.2.1a1",
+      "runtimeHint": "uvx",
+      "runtimeArguments": [
+        {
+          "type": "named",
+          "name": "--from",
+          "value": "hermes-prime-mcp"
+        }
+      ],
+      "packageArguments": [
+        {
+          "type": "positional",
+          "value": "hermes-prime-mcp"
+        }
+      ],
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "HERMES_PRIME_FRAGMENT_ROOT",
+          "description": "Directory containing CLAUDE-fragment.md (default: repo root the server is run from).",
+          "isRequired": false
+        }
+      ]
+    }
+  ]
+}
