@@ -19,7 +19,11 @@ requires separate owner authorization and public readback.
   own.
 - MCP server echoes a recognized client `protocolVersion` (2024-11-05,
   2025-03-26, 2025-06-18) instead of always answering 2024-11-05. Two new
-  tests cover both behaviors (12 MCP tests total).
+  tests cover both behaviors.
+- Packaged MCP installs ship the default and scoped convention cards. The
+  package check verifies a clean-wheel server can return the default card;
+  source and bundled cards are tested to stay byte-identical (13 MCP tests
+  total).
 - README and `mcp-server/README.md` record the registration command as
   verified against Claude Code 2.1.268 (`claude mcp list` reports Connected).
 
@@ -31,7 +35,7 @@ requires separate owner authorization and public readback.
 - `SPEC.md`, `PLAN-V2.md`, and `MCP-SCOPE-INVESTIGATION.md` carry a
   historical header naming what shipped and what did not; bodies unchanged.
 - `CONTRIBUTING.md` and `INTENT.md` describe both surfaces: 11 Bash
-  assertions, 12 MCP tests, the 8000-character fragment budget, and
+  assertions, 13 MCP tests, the 8000-character fragment budget, and
   stdlib-only Python for the MCP server. `llms.txt` About block aligned with
   the README positioning.
 - `--uninject` now byte-restores an unedited injected suffix, including
@@ -55,7 +59,7 @@ requires separate owner authorization and public readback.
 ### Verified locally
 
 - Bash mechanism suite: 11/11.
-- MCP suite: 12/12.
+- MCP suite: 13/13.
 - E2/E3: pass with identical E3 raw hashes.
 
 ## [0.2.0] — 2026-04-26

@@ -8,6 +8,7 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+from importlib import resources
 from pathlib import Path
 
 import pytest
@@ -16,6 +17,7 @@ SERVER = Path(__file__).resolve().parent / "hermes_prime_mcp.py"
 REPO_ROOT = SERVER.parent.parent
 DEFAULT_FRAGMENT = REPO_ROOT / "CLAUDE-fragment.md"
 SCOPED_DIR = SERVER.parent / "fragments"
+PACKAGED_ASSETS = Path(str(resources.files("hermes_prime_assets")))
 
 
 def _rpc(messages: list[dict]) -> list[dict]:
@@ -101,6 +103,15 @@ def test_get_conventions_default():
     expected = DEFAULT_FRAGMENT.read_text(encoding="utf-8")
     assert text == expected
     assert "session-init" in text  # sanity check on fragment content
+
+
+def test_packaged_fragments_match_source_contract():
+    """The wheel ships the same cards used by the checkout and Bash surface."""
+    assert (PACKAGED_ASSETS / "CLAUDE-fragment.md").read_text(encoding="utf-8") \
+        == DEFAULT_FRAGMENT.read_text(encoding="utf-8")
+    assert (PACKAGED_ASSETS / "fragments" / "session-init.md").read_text(
+        encoding="utf-8"
+    ) == (SCOPED_DIR / "session-init.md").read_text(encoding="utf-8")
 
 
 def test_get_conventions_with_scope():

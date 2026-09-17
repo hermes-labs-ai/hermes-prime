@@ -35,7 +35,7 @@
       "environmentVariables": [
         {
           "name": "HERMES_PRIME_FRAGMENT_ROOT",
-          "description": "Directory containing CLAUDE-fragment.md (default: repo root the server is run from).",
+          "description": "Directory containing a trusted custom CLAUDE-fragment.md (default: the versioned card bundled with the installed package).",
           "isRequired": false
         }
       ]

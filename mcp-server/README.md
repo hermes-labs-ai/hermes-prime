@@ -35,9 +35,10 @@ Register the installed script directly with Claude Code:
 claude mcp add --scope local hermes-prime -- hermes-prime-mcp
 ```
 
-Set `HERMES_PRIME_FRAGMENT_ROOT=/path/to/your/project` if you want the
-packaged server to read a `CLAUDE-fragment.md` outside its own install
-directory (see [Configuration](#configuration)).
+The packaged server reads the versioned convention card bundled in its wheel.
+Set `HERMES_PRIME_FRAGMENT_ROOT=/path/to/your/project` only when you want it
+to read a trusted custom `CLAUDE-fragment.md` instead (see
+[Configuration](#configuration)).
 
 ## Register in Claude Code (from a repo checkout)
 
@@ -82,9 +83,11 @@ Remove it from the same project/scope in which it was registered.
 
 ## Configuration
 
-`HERMES_PRIME_FRAGMENT_ROOT` env var overrides the directory containing
-`CLAUDE-fragment.md` (default: repo root, one level up from this file).
-Scoped fragments live in `mcp-server/fragments/<scope_class>.md`.
+`HERMES_PRIME_FRAGMENT_ROOT` overrides the directory containing the default
+`CLAUDE-fragment.md`. In a repository checkout the default is the repository
+root; in a packaged install it is the immutable card bundled with the wheel.
+Scoped fragments are bundled at
+`mcp-server/fragments/<scope_class>.md` in a checkout.
 
 ## Tests
 
@@ -92,7 +95,7 @@ Scoped fragments live in `mcp-server/fragments/<scope_class>.md`.
 python3 -m pytest mcp-server/test_hermes_prime_mcp.py -v
 ```
 
-12 tests, stdlib-only (subprocess + json), no `mcp` SDK dependency.
+13 tests, stdlib-only (subprocess + json), no `mcp` SDK dependency.
 
 ## Packaging status
 

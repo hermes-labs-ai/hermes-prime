@@ -42,4 +42,8 @@ hermes-prime-mcp = "hermes_prime_mcp:main"
 
 [tool.setuptools]
 py-modules = ["hermes_prime_mcp"]
+packages = ["hermes_prime_assets", "hermes_prime_assets.fragments"]
 package-dir = { "" = "mcp-server" }
+
+[tool.setuptools.package-data]
+hermes_prime_assets = ["*.md", "fragments/*.md"]
