@@ -15,18 +15,30 @@ from __future__ import annotations
 import json
 import os
 import sys
+from importlib import resources
 from pathlib import Path
 
 # ── Fragment resolution ──────────────────────────────────────────────────────
 
-# Configurable via env var; default = repo-root CLAUDE-fragment.md (one level up).
+# In a checkout the root fragment is canonical. Installed wheels instead use
+# the read-only copies bundled in hermes_prime_assets. Keeping the checkout
+# path first preserves the Bash and MCP surfaces' shared source artifact.
 _DEFAULT_REPO_ROOT = Path(__file__).resolve().parent.parent
-FRAGMENT_ROOT = Path(
-    os.environ.get("HERMES_PRIME_FRAGMENT_ROOT", str(_DEFAULT_REPO_ROOT))
-).resolve()
+_SOURCE_SCOPED_DIR = Path(__file__).resolve().parent / "fragments"
+_BUNDLED_ASSET_ROOT = Path(str(resources.files("hermes_prime_assets")))
+
+DEFAULT_FRAGMENT_ROOT = (
+    _DEFAULT_REPO_ROOT
+    if (_DEFAULT_REPO_ROOT / "CLAUDE-fragment.md").is_file()
+    else _BUNDLED_ASSET_ROOT
+)
+FRAGMENT_ROOT = Path(os.environ.get(
+    "HERMES_PRIME_FRAGMENT_ROOT", str(DEFAULT_FRAGMENT_ROOT)
+)).resolve()
 
 DEFAULT_FRAGMENT = FRAGMENT_ROOT / "CLAUDE-fragment.md"
-SCOPED_DIR = Path(__file__).resolve().parent / "fragments"
+SCOPED_DIR = _SOURCE_SCOPED_DIR if _SOURCE_SCOPED_DIR.is_dir() else \
+    _BUNDLED_ASSET_ROOT / "fragments"
 
 # ── Protocol constants ───────────────────────────────────────────────────────
 

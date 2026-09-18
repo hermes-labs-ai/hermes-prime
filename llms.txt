@@ -45,7 +45,7 @@ See `CLAUDE-fragment.md` for the full text.
 
 Source version `0.2.1-alpha.1` is an unreleased alpha candidate. There is no public
 0.2.1-alpha.1 tag or GitHub release, and this source state authorizes neither. The
-local acceptance contract is ShellCheck, 11 Bash assertions, 12 MCP tests, and
+local acceptance contract is ShellCheck, 11 Bash assertions, 13 MCP tests, and
 E2/E3 with byte-identical E3 hashes.
 
 ## Related

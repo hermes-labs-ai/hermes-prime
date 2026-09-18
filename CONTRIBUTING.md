@@ -26,7 +26,7 @@ Not accepted:
 ```bash
 git clone https://github.com/hermes-labs-ai/hermes-prime
 cd hermes-prime
-./scripts/local-ci.sh           # shellcheck + 11 Bash assertions + 12 MCP tests + fragment checks
+./scripts/local-ci.sh           # shellcheck + 11 Bash assertions + 13 MCP tests + fragment checks
 bash evals/preliminary-bootstrap-eval.sh --skip-e1  # E2/E3 mechanism evals (E1 needs claude-cli)
 ```
 

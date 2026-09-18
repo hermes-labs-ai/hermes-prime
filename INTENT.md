@@ -49,7 +49,7 @@ surfaces: a marker-anchored Bash injector and a read-only stdio MCP server.
 
 ## What "done" means for the 0.2.1-alpha.1 source candidate
 
-- 11/11 Bash assertions and 12/12 MCP tests pass locally and in the hosted `ci` workflow on Ubuntu and macOS.
+- 11/11 Bash assertions and 13/13 MCP tests pass locally and in the hosted `ci` workflow on Ubuntu and macOS.
 - E1 produces actual recall numbers (positive, partial, or null) with raw transcripts committed.
 - E2 and E3 pass.
 - E3 requires identical raw pre/post hashes.

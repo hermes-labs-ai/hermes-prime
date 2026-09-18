@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "hermes-prime-mcp"
 version = "0.2.1a1"
-description = "Read-only stdio MCP server that serves a versioned convention card (get_conventions / list_scopes) to a fresh Claude Code session."
+description = "Read-only stdio MCP server for a versioned convention card in Claude Code."
 readme = "mcp-server/README.md"
 license = { text = "MIT" }
 requires-python = ">=3.9"
@@ -42,4 +42,8 @@ hermes-prime-mcp = "hermes_prime_mcp:main"
 
 [tool.setuptools]
 py-modules = ["hermes_prime_mcp"]
+packages = ["hermes_prime_assets", "hermes_prime_assets.fragments"]
 package-dir = { "" = "mcp-server" }
+
+[tool.setuptools.package-data]
+hermes_prime_assets = ["*.md", "fragments/*.md"]
