@@ -103,6 +103,8 @@ python3 -m pytest mcp-server/test_hermes_prime_mcp.py -v
   exposing the `hermes-prime-mcp` console script via `python -m build`.
 - `server.json` (repo root) is the MCP Registry manifest, matching the
   registry's `2025-12-11` `server.schema.json`.
+- Before publishing, run `mcp-publisher validate server.json`; this verifies
+  the live Registry contract without creating a listing.
 - **Not yet done by this change, remains for the repo owner:** `twine upload`
   to PyPI, a tagged GitHub release, and `mcp-publisher publish` (or the
   registry's GitHub Action) to submit `server.json`. This branch does not
