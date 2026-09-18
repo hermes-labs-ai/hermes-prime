@@ -71,7 +71,7 @@ jobs:
           printf '%s\n%s\n' \
             '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18"}}' \
             '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"get_conventions","arguments":{}}}' \
-            | /tmp/hp-ci-venv/bin/hermes-prime-mcp | tee /tmp/hp-ci-handshake.log
+          | /tmp/hp-ci-venv/bin/hermes-prime-mcp | tee /tmp/hp-ci-handshake.log
           grep -q '"serverInfo"' /tmp/hp-ci-handshake.log
-          grep -q '"get_conventions"' /tmp/hp-ci-handshake.log
+          grep -q '"id": 2' /tmp/hp-ci-handshake.log
           grep -q 'session-init: BEGIN' /tmp/hp-ci-handshake.log
