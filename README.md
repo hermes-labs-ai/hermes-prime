@@ -135,8 +135,15 @@ called.
 ## Status
 
 **Source version 0.2.1-alpha.1 — unreleased alpha candidate.** There is no public
-0.2.1-alpha.1 tag or GitHub release, and this branch does not authorize one. The
-mechanism suite contains 11 Bash assertions plus 13 MCP tests. E1 is one
+0.2.1-alpha.1 tag or GitHub release, and this branch does not authorize one.
+
+The MCP distribution is a separate surface and it *is* public: `hermes-prime-mcp`
+`0.2.1a2` is on PyPI and the MCP Registry listing
+`io.github.hermes-labs-ai/hermes-prime` `0.2.1-alpha.1` is `active` (both
+verified 2026-09-18). `uvx --from hermes-prime-mcp hermes-prime-mcp` works today
+without a checkout. "Unreleased" above describes the repository, not the package.
+
+The mechanism suite contains 11 Bash assertions plus 13 MCP tests. E1 is one
 author-run three-question control/treatment observation; it is preliminary
 convention-recall evidence, not evidence that the tool prevents drift or
 improves downstream task performance.

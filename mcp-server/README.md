@@ -17,8 +17,8 @@ mcp-name: io.github.hermes-labs-ai/hermes-prime
 
 ## Install from PyPI (packaged console script)
 
-Once published (see [Packaging status](#packaging-status) below), the server
-installs as a standalone console script with no repo checkout required:
+`hermes-prime-mcp` **0.2.1a2 is published on PyPI**, so the server installs as
+a standalone console script with no repo checkout required:
 
 ```bash
 pip install hermes-prime-mcp
@@ -30,6 +30,18 @@ or run it without installing, via `uvx`:
 ```bash
 uvx --from hermes-prime-mcp hermes-prime-mcp
 ```
+
+Both releases so far are pre-releases (`0.2.1a1`, `0.2.1a2`), which is why
+plain `pip install hermes-prime-mcp` resolves them without `--pre`: pip falls
+back to a pre-release when no stable release satisfies the requirement, and
+there is no stable release here to prefer. Verified 2026-09-18 on pip 24.0 and
+on `uv`/`uvx`; the resulting console script answers `initialize` and
+`tools/list` over stdio. Pin `hermes-prime-mcp==0.2.1a2` if you need the
+install to stay on this exact card.
+
+Publication of the distribution is not a repository release. There is still no
+`0.2.1-alpha.1` git tag or GitHub release object — see
+[Packaging status](#packaging-status).
 
 Register the installed script directly with Claude Code:
 
@@ -105,6 +117,14 @@ python3 -m pytest mcp-server/test_hermes_prime_mcp.py -v
   exposing the `hermes-prime-mcp` console script via `python -m build`.
 - `server.json` (repo root) is the MCP Registry manifest, matching the
   registry's `2025-12-11` `server.schema.json`.
+- Published artifacts, verified 2026-09-18:
+  - PyPI distribution `hermes-prime-mcp` at `0.2.1a1` and `0.2.1a2`
+    (<https://pypi.org/project/hermes-prime-mcp/>).
+  - MCP Registry listing `io.github.hermes-labs-ai/hermes-prime` version
+    `0.2.1-alpha.1`, status `active`, published 2026-09-18T01:30:20Z.
+- Not published: a `0.2.1-alpha.1` git tag and a GitHub release object. The
+  source tree remains an unreleased candidate in the repository's own sense of
+  the word; only the MCP distribution is public.
 - Before publishing, run `mcp-publisher validate server.json`; this verifies
   the live Registry contract without creating a listing.
 - The package version declared by `server.json` is published to PyPI before
