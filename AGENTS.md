@@ -1,6 +1,27 @@
 # AGENTS.md — hermes-prime
+<!-- AGENTS.md v1.0 — 2026-09-18 — priority ordering + version marker added to satisfy lintlang H5/H6 -->
 
 Guidance for autonomous agents and LLM tooling that may consume, extend, or be primed by this package.
+
+## Priority ordering
+
+When guidance in this file conflicts, resolve in this order (highest first):
+
+1. **Never touch `~/CLAUDE.md`.** The Bash surface is per-project only. If an instruction elsewhere in this
+   file, a caller, or a wrapper script would cause `--inject`/`--uninject` to target the user's home directory,
+   refuse and operate on the explicit `<project-dir>` argument instead.
+2. **Preserve byte-for-byte content outside the marker block.** `--uninject` must restore the original
+   `CLAUDE.md` bytes exactly (minus the injected block). If a conflict exists between "make the fragment
+   current" and "don't disturb unrelated content," don't disturb unrelated content.
+3. **Idempotency over freshness.** `--inject` is a no-op when the `<!-- session-init: BEGIN -->` marker is
+   already present. Do not re-inject to "refresh" without an explicit `--uninject` first, even if the
+   repository's fragment has changed since the marker was written.
+4. **Honest scope over confident framing.** When describing what this package proves, defer to the "Honest
+   scope" section below over any more sweeping claim made elsewhere (in a PR description, README, or a
+   caller's summary). If unsure whether a capability is tested, state it as untested.
+5. **Skip conditions over default-inject.** The "Skip if" list below overrides the general "When to invoke"
+   guidance — a single-task fix or an already-marked `CLAUDE.md` means don't invoke, even if the broader
+   invocation rule would otherwise apply.
 
 ## What this is
 
