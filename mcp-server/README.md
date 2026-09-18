@@ -32,9 +32,12 @@ uvx --from hermes-prime-mcp hermes-prime-mcp
 ```
 
 Both releases so far are pre-releases (`0.2.1a1`, `0.2.1a2`), which is why
-plain `pip install hermes-prime-mcp` resolves them without `--pre`: there is
-no stable release for pip to prefer. Pin `hermes-prime-mcp==0.2.1a2` if you
-need the install to stay on this exact card.
+plain `pip install hermes-prime-mcp` resolves them without `--pre`: pip falls
+back to a pre-release when no stable release satisfies the requirement, and
+there is no stable release here to prefer. Verified 2026-09-18 on pip 24.0 and
+on `uv`/`uvx`; the resulting console script answers `initialize` and
+`tools/list` over stdio. Pin `hermes-prime-mcp==0.2.1a2` if you need the
+install to stay on this exact card.
 
 Publication of the distribution is not a repository release. There is still no
 `0.2.1-alpha.1` git tag or GitHub release object — see
