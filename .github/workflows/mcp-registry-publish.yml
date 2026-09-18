@@ -1,0 +1,70 @@
+name: Publish MCP Registry listing
+
+on:
+  workflow_dispatch:
+    inputs:
+      server_version:
+        description: Exact server.json version to publish
+        required: true
+        type: string
+        default: 0.2.1-alpha.1
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: mcp-registry-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify manifest and published package identity
+        env:
+          EXPECTED_SERVER_VERSION: ${{ inputs.server_version }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from urllib.request import urlopen
+
+          with open("server.json", encoding="utf-8") as manifest_file:
+              manifest = json.load(manifest_file)
+          if manifest["version"] != os.environ["EXPECTED_SERVER_VERSION"]:
+              raise SystemExit(
+                  "server.json version does not match the manually approved release identity"
+              )
+
+          package = manifest["packages"][0]
+          if package["registryType"] != "pypi" or package["registryBaseUrl"] != "https://pypi.org":
+              raise SystemExit("server.json must reference the canonical PyPI package")
+          package_url = (
+              f"https://pypi.org/pypi/{package['identifier']}/{package['version']}/json"
+          )
+          with urlopen(package_url, timeout=20) as response:
+              package_release = json.load(response)
+          if package_release["info"]["version"] != package["version"]:
+              raise SystemExit("published PyPI version does not match server.json")
+          if not any(not file["yanked"] for file in package_release["urls"]):
+              raise SystemExit("published PyPI release has no non-yanked artifacts")
+          PY
+
+      - name: Install MCP Registry publisher
+        run: python -m pip install --disable-pip-version-check mcp-publisher==1.8.1
+
+      - name: Validate manifest against the live Registry contract
+        run: mcp-publisher validate server.json
+
+      - name: Authenticate with GitHub Actions OIDC
+        run: mcp-publisher login github-oidc
+
+      - name: Publish manifest
+        run: mcp-publisher publish server.json

@@ -105,7 +105,8 @@ python3 -m pytest mcp-server/test_hermes_prime_mcp.py -v
   registry's `2025-12-11` `server.schema.json`.
 - Before publishing, run `mcp-publisher validate server.json`; this verifies
   the live Registry contract without creating a listing.
-- **Not yet done by this change, remains for the repo owner:** `twine upload`
-  to PyPI, a tagged GitHub release, and `mcp-publisher publish` (or the
-  registry's GitHub Action) to submit `server.json`. This branch does not
-  create a PyPI credential, a git tag, or a GitHub Release.
+- `hermes-prime-mcp` version `0.2.1a1` is published on PyPI. The Registry
+  listing is submitted only through the manually dispatched **Publish MCP
+  Registry listing** GitHub Actions workflow. It checks the selected
+  `server.json` version and its live PyPI artifact, validates the manifest,
+  then uses short-lived GitHub Actions OIDC—no stored Registry token.
