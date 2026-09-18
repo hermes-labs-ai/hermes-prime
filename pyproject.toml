@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hermes-prime-mcp"
-version = "0.2.1a1"
+version = "0.2.1a2"
 description = "Read-only stdio MCP server for a versioned convention card in Claude Code."
 readme = "mcp-server/README.md"
 license = { text = "MIT" }

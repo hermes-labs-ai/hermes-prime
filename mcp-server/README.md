@@ -6,6 +6,8 @@ at the top instead of relying on `CLAUDE.md` injection.
 
 Pure stdlib. No third-party runtime dependencies.
 
+mcp-name: io.github.hermes-labs-ai/hermes-prime
+
 ## Tools
 
 - `get_conventions(scope_class?)` — returns the CLAUDE-fragment as raw markdown.
@@ -105,8 +107,9 @@ python3 -m pytest mcp-server/test_hermes_prime_mcp.py -v
   registry's `2025-12-11` `server.schema.json`.
 - Before publishing, run `mcp-publisher validate server.json`; this verifies
   the live Registry contract without creating a listing.
-- `hermes-prime-mcp` version `0.2.1a1` is published on PyPI. The Registry
-  listing is submitted only through the manually dispatched **Publish MCP
-  Registry listing** GitHub Actions workflow. It checks the selected
-  `server.json` version and its live PyPI artifact, validates the manifest,
-  then uses short-lived GitHub Actions OIDC—no stored Registry token.
+- The package version declared by `server.json` is published to PyPI before
+  Registry dispatch. The Registry listing is submitted only through the
+  manually dispatched **Publish MCP Registry listing** GitHub Actions
+  workflow. It checks the selected `server.json` version and its live PyPI
+  artifact, validates the manifest, then uses short-lived GitHub Actions
+  OIDC—no stored Registry token.
