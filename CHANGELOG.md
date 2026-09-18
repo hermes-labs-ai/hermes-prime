@@ -48,6 +48,25 @@ requires separate owner authorization and public readback.
 - E3 now requires identical raw pre/post hashes instead of accepting a
   whitespace-normalized match.
 
+### Fixed
+
+- Distribution status is stated separately from repository release status.
+  `mcp-server/README.md` had gated its PyPI install instructions behind "once
+  published" while `hermes-prime-mcp` `0.2.1a2` was already on PyPI and the
+  registry listing `io.github.hermes-labs-ai/hermes-prime` was already
+  `active`; a reader was told to wait for an install route that worked. README
+  and `mcp-server/README.md` now record the live PyPI and Registry coordinates
+  (verified 2026-09-18) and keep the separate, still-accurate fact that no
+  `0.2.1-alpha.1` git tag or GitHub release object exists.
+
+  `AGENTS.md` still carries the old one-line framing. It is excluded from this
+  change because the file already fails the repository's own pre-push
+  `lintlang --fail-on review` gate on `origin/main` (H5 medium: ~26
+  instructions with no explicit priority ordering; H6 info: no version
+  marker), so any commit touching it cannot be pushed until those findings are
+  resolved. Resolving them edits the agent instructions themselves and is a
+  separate, owner-scoped change.
+
 ### Removed
 
 - Unsupported efficacy and internal-rate claims.
