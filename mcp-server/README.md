@@ -43,7 +43,15 @@ Publication of the distribution is not a repository release. There is still no
 `0.2.1-alpha.1` git tag or GitHub release object — see
 [Packaging status](#packaging-status).
 
-Register the installed script directly with Claude Code:
+Register the server from your project directory. If you used `uvx`, keep that
+launcher in the registration too; a one-off `uvx` run does not put the console
+script on your shell's `PATH`:
+
+```bash
+claude mcp add --scope local hermes-prime -- uvx --from hermes-prime-mcp==0.2.1a2 hermes-prime-mcp
+```
+
+If you used `pip install` and the console script is on `PATH`, register it directly:
 
 ```bash
 claude mcp add --scope local hermes-prime -- hermes-prime-mcp
@@ -77,6 +85,21 @@ and the server's `initialize` instructions tell the session to call
 `get_conventions` once before recursive or emergent work.
 
 ## Verify it works
+
+From any directory, test the published package without a repository checkout:
+
+```bash
+printf '%s\n%s\n' \
+  '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}' \
+  '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"get_conventions","arguments":{}}}' \
+  | uvx --from hermes-prime-mcp==0.2.1a2 hermes-prime-mcp
+```
+
+Expect two JSON-RPC responses: the first identifies the server; the second
+contains the bundled convention card. This checks delivery, not whether a model
+will follow the card.
+
+To test a source checkout instead, run from the repository root:
 
 ```bash
 printf '%s\n%s\n' \
