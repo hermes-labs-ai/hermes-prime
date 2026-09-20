@@ -62,6 +62,28 @@ Set `HERMES_PRIME_FRAGMENT_ROOT=/path/to/your/project` only when you want it
 to read a trusted custom `CLAUDE-fragment.md` instead (see
 [Configuration](#configuration)).
 
+## Register in Codex
+
+Register the packaged read-only stdio server:
+
+```bash
+codex mcp add hermes-prime -- uvx --from hermes-prime-mcp==0.2.1a2 hermes-prime-mcp
+codex mcp list
+```
+
+Start a new Codex session, then request `get_conventions` to read the bundled convention card. The server exposes `get_conventions` and `list_scopes`. The initial `uvx` installation needs access to the package registry; the server itself reads its bundled card without editing project files or making network calls.
+
+## Register in Gemini CLI
+
+Register the same pinned package in the current project:
+
+```bash
+gemini mcp add --scope project hermes-prime uvx --from hermes-prime-mcp==0.2.1a2 hermes-prime-mcp
+gemini mcp list
+```
+
+Start a new Gemini CLI session and request `get_conventions`. Project scope stores the registration in `.gemini/settings.json`; use `--scope user` when you want the server available across your projects. These commands preserve normal tool confirmation by omitting the `--trust` option.
+
 ## Register in Claude Code (from a repo checkout)
 
 Run from the repository root. Local scope loads the command for your sessions
