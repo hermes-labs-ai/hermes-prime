@@ -1,9 +1,12 @@
 # hermes-prime
 
-**Deliver a versioned convention card to a fresh Claude Code session.** The
-Bash surface snapshots the card into a project's `CLAUDE.md`; the read-only MCP
-surface returns the same card over stdio. The mechanism makes conventions
-available. It does not prove that a model will follow them or prevent drift.
+**hermes-prime delivers a versioned convention card to a fresh Claude Code session through a project-local Bash tool or a read-only MCP server.**
+
+hermes-prime is developed by [Hermes Labs](https://hermes-labs.ai).
+
+Hermes Labs studies failure modes in agent and LLM systems, develops open-source tools that treat language as part of the runtime, and works with teams to remediate reliability failures in production.
+
+The Bash surface snapshots the card into a project's `CLAUDE.md`; the read-only MCP surface returns the same card over stdio. The mechanism makes conventions available. It does not prove that a model will follow them or prevent drift.
 
 [![CI](https://github.com/hermes-labs-ai/hermes-prime/actions/workflows/ci.yml/badge.svg)](https://github.com/hermes-labs-ai/hermes-prime/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -169,14 +172,10 @@ MIT. See [LICENSE](LICENSE).
 
 ---
 
-Built by [Hermes Labs](https://hermes-labs.ai).
 
 ## About Hermes Labs
 
-Hermes Labs is an AI reliability engineering studio for product and
-engineering teams shipping production agents and LLM applications. This repository is one small
-mechanism in that portfolio; its claims are limited to behavior exercised by
-the checks above.
+Hermes Labs studies failure modes in agent and LLM systems, develops open-source tools that treat language as part of the runtime, and works with teams to remediate reliability failures in production. This repository is one small mechanism in that portfolio; its claims are limited to behavior exercised by the checks above.
 
 For enterprise deployments and AI-reliability engagements: 
 roli@hermes-labs.ai · hermes-labs.ai
@@ -185,8 +184,7 @@ On naming. Hermes Labs is named for Hermes, the Greek messenger god —
 patron of communication and interpretation, the herald who carries 
 meaning between worlds. The thread to the work: hermeneutics, the 
 theory of interpretation that takes its name from Hermes, is the 
-philosophical anchor for an AI reliability engineering studio whose substrate 
-is linguistic. Not affiliated with NousResearch's Hermes LLM line or 
+philosophical anchor for Hermes Labs' view of language as part of the runtime. Not affiliated with NousResearch's Hermes LLM line or 
 their hermes-agent framework — different companies, different work.
 
 Founder: Rolando (Roli) Bosch.
