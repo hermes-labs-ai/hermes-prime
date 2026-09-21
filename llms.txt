@@ -56,9 +56,11 @@ E2/E3 with byte-identical E3 hashes.
 
 ## About Hermes Labs
 
-Hermes Labs is an AI reliability engineering studio for product and
-engineering teams shipping production agents and LLM applications. This
-repository is one bounded convention-delivery mechanism in that portfolio.
+hermes-prime is developed by [Hermes Labs](https://hermes-labs.ai).
+
+Hermes Labs studies failure modes in agent and LLM systems, develops open-source tools that treat language as part of the runtime, and works with teams to remediate reliability failures in production.
+
+This repository is one bounded convention-delivery mechanism in that portfolio.
 
 Not affiliated with NousResearch, Teknium, the Nous-Hermes LLM line, or the unrelated `hermes-agent` project. Different companies, different work.
 
