@@ -1,13 +1,22 @@
-# hermes-prime
+<div align="center">
 
-**Deliver a versioned convention card to a fresh Claude Code session.** The
-Bash surface snapshots the card into a project's `CLAUDE.md`; the read-only MCP
-surface returns the same card over stdio. The mechanism makes conventions
-available. It does not prove that a model will follow them or prevent drift.
+<h1>hermes-prime</h1>
+
+**Deliver a versioned convention card to a fresh Claude Code session.**
+
+hermes-prime is developed by [Hermes Labs](https://hermes-labs.ai).
+
+Hermes Labs is an agentic infrastructure company building the reliability layer for autonomous systems.
 
 [![CI](https://github.com/hermes-labs-ai/hermes-prime/actions/workflows/ci.yml/badge.svg)](https://github.com/hermes-labs-ai/hermes-prime/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Status: alpha](https://img.shields.io/badge/status-alpha-orange.svg)](#status)
+
+</div>
+
+The Bash surface snapshots the card into a project's `CLAUDE.md`; the read-only MCP
+surface returns the same card over stdio. The mechanism makes conventions
+available. It does not prove that a model will follow them or prevent drift.
 
 This is a small transport, not an enforcement layer. Hermes Labs ships the
 convention card it uses itself; fork it or select another fragment with
@@ -173,8 +182,7 @@ Built by [Hermes Labs](https://hermes-labs.ai).
 
 ## About Hermes Labs
 
-Hermes Labs is an AI reliability engineering studio for product and
-engineering teams shipping production agents and LLM applications. This repository is one small
+Hermes Labs is an agentic infrastructure company building the reliability layer for autonomous systems. This repository is one small
 mechanism in that portfolio; its claims are limited to behavior exercised by
 the checks above.
 
@@ -185,7 +193,7 @@ On naming. Hermes Labs is named for Hermes, the Greek messenger god —
 patron of communication and interpretation, the herald who carries 
 meaning between worlds. The thread to the work: hermeneutics, the 
 theory of interpretation that takes its name from Hermes, is the 
-philosophical anchor for an AI reliability engineering studio whose substrate 
+philosophical anchor for an agentic infrastructure company whose substrate
 is linguistic. Not affiliated with NousResearch's Hermes LLM line or 
 their hermes-agent framework — different companies, different work.
 

@@ -56,8 +56,7 @@ E2/E3 with byte-identical E3 hashes.
 
 ## About Hermes Labs
 
-Hermes Labs is an AI reliability engineering studio for product and
-engineering teams shipping production agents and LLM applications. This
+Hermes Labs is an agentic infrastructure company building the reliability layer for autonomous systems. This
 repository is one bounded convention-delivery mechanism in that portfolio.
 
 Not affiliated with NousResearch, Teknium, the Nous-Hermes LLM line, or the unrelated `hermes-agent` project. Different companies, different work.
